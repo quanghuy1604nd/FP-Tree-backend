@@ -1,34 +1,21 @@
 package com.datamining.group4.service.impl;
 
 import com.datamining.group4.converter.NodeConverter;
-import com.datamining.group4.dto.NodeDTO;
-import com.datamining.group4.service.FPTreeService;
+import com.datamining.group4.dto.FPTreeDTO;
+import com.datamining.group4.service.PreprocessingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.datamining.group4.entity.*;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+
 import java.util.*;
 
 @Service
-public class FPTreeServiceImpl implements FPTreeService {
+public class PreprocessingServiceImpl implements PreprocessingService {
     @Autowired
     private NodeConverter nodeConverter;
-    private static final String SPLIT_REGEX = ",";
-
-    private NodeDTO convertTree(Node entity) {
-        NodeDTO dto = nodeConverter.toDto(entity);
-        List<NodeDTO> list = new ArrayList<>();
-        for(Node node : entity.getChildren()) {
-            list.add(convertTree(node));
-        }
-        dto.setChildren(list);
-        return dto;
-    }
 
     @Override
-    public NodeDTO createTree(Node root, List<List<String>> data) {
+    public FPTreeDTO createTree(Node root, List<List<String>> data) {
         for(List<String> transaction : data) {
             Node p = root;
             for(String item : transaction) {
@@ -45,40 +32,34 @@ public class FPTreeServiceImpl implements FPTreeService {
             }
         }
 
-        return convertTree(root);
+        return new FPTreeDTO(nodeConverter.toDto(root));
     }
 
+
+
     @Override
-    public List<List<String>> readCsv(String fileName) {
-        List<List<String>> records = new ArrayList<>();
-        try(BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName))) {
-            String line;
-            while((line = bufferedReader.readLine()) != null) {
-                String[] values = line.split(SPLIT_REGEX);
-                records.add(Arrays.asList(values));
+    public HashMap<String, Integer> findItemFrequencies(List<List<String>> dataset) {
+        HashMap<String, Integer> itemFrequencies = new HashMap<>();
+        for(List<String> transaction : dataset) {
+            for(String item : transaction) {
+                if(itemFrequencies.containsKey(item)) {
+                    int count = itemFrequencies.get(item);
+                    itemFrequencies.put(item, count + 1);
+                }
+                else {
+                    itemFrequencies.put(item, 1);
+                }
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
-        return records;
+        return itemFrequencies;
     }
 
     @Override
     public HashMap<String, Integer> findItemGreaterOrEqualThreshold(List<List<String>> dataset, int threshold) {
-        HashMap<String, Integer> itemFrequency = new HashMap<>();
-        for(List<String> transaction : dataset) {
-            for(String item : transaction) {
-                if(itemFrequency.containsKey(item)) {
-                    int count = itemFrequency.get(item);
-                    itemFrequency.put(item, count + 1);
-                }
-                else {
-                    itemFrequency.put(item, 1);
-                }
-            }
-        }
-        HashMap<String, Integer> result = new HashMap<>();
-        for(Map.Entry<String, Integer>entry : itemFrequency.entrySet()) {
+
+        HashMap<String, Integer> itemFrequencies = findItemFrequencies(dataset),
+                                 result = new HashMap<>();
+        for(Map.Entry<String, Integer> entry : itemFrequencies.entrySet()) {
             if(entry.getValue() >= threshold) {
                 result.put(entry.getKey(), entry.getValue());
             }

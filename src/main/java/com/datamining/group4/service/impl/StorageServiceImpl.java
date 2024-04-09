@@ -1,7 +1,7 @@
 package com.datamining.group4.service.impl;
 
 import com.datamining.group4.configuration.StorageProperties;
-import com.datamining.group4.entity.CSVFile;
+import com.datamining.group4.entity.Metadata;
 import com.datamining.group4.exception.StorageException;
 import com.datamining.group4.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,17 +29,17 @@ public class StorageServiceImpl implements StorageService {
     }
 
     @Override
-    public CSVFile storeFile(MultipartFile file) {
+    public Metadata storeFile(MultipartFile file, double minSup) {
         try {
             if(file.isEmpty()) {
                 throw new StorageException("Cannot be empty");
             }
             String originalFileName = file.getOriginalFilename();
             String storedName = createUniqueFileName();
-            CSVFile csvFile = new CSVFile(originalFileName, storedName);
+            Metadata metadata = new Metadata(originalFileName, storedName, minSup);
             FileOutputStream fos = new FileOutputStream(getPathToFile(storedName));
             fos.write(file.getBytes());
-            return csvFile;
+            return metadata;
 
         }
         catch (IOException e) {

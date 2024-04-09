@@ -1,47 +1,66 @@
 package com.datamining.group4.controller;
 
-import com.datamining.group4.converter.NodeConverter;
-import com.datamining.group4.dto.NodeDTO;
+import com.datamining.group4.dto.FPTreeDTO;
 import com.datamining.group4.entity.Node;
-import com.datamining.group4.service.FPTreeService;
+import com.datamining.group4.service.PreprocessingService;
 
+import com.datamining.group4.service.FileService;
 import com.datamining.group4.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
+
 @RestController
 @CrossOrigin("*")
 public class FPTController {
     @Autowired
-    private FPTreeService fpTree;
-
+    private PreprocessingService preprocessingService;
+    @Autowired
+    private FileService fileService;
     @Autowired
     private StorageService storageService;
 
     @GetMapping("/detail")
-    public HashMap<String, Integer> getDetailData(@RequestParam(required = false) String fileName) {
+    public HashMap<String, Integer> getDetailData(@RequestParam String fileName) {
         String filePath = storageService.getPathToFile(fileName);
-        List<List<String>> dataset = fpTree.readCsv(filePath);
-        return fpTree.findItemGreaterOrEqualThreshold(dataset, 0);
+        List<List<String>> dataset = fileService.readCsv(filePath);
+        return preprocessingService.findItemFrequencies(dataset);
     }
 
-    @GetMapping("/updatedtransaction")
-    public List<List<String>> getUpdatedTransaction(@RequestParam String fileName) {
+    @GetMapping("/transactions")
+    public List<List<String>> getTransaction(@RequestParam String fileName, @RequestParam(required = false) Optional<Integer> numOfRecords) {
         String filePath = storageService.getPathToFile(fileName);
-        List<List<String>> dataset = fpTree.readCsv(filePath);
-        return fpTree.updateTransactionsAfterRemoveItem(dataset, 0);
+        return numOfRecords.map(num -> fileService.getFirstNRecords(filePath, num)).orElseGet(() -> fileService.getFirstNRecords(filePath, 10));
+    }
+
+    @GetMapping("/updated/detail")
+    public HashMap<String, Integer> getUpdatedDetailData(@RequestParam String fileName, @RequestParam(required = false) Optional<Double> minSup) {
+        String filePath = storageService.getPathToFile(fileName);
+        List<List<String>> dataset = fileService.readCsv(filePath);
+        int threshold = minSup.map(aDouble -> (int) (aDouble * dataset.size())).orElseGet(() -> (int) (0.02 * dataset.size()));
+        return preprocessingService.findItemGreaterOrEqualThreshold(dataset, threshold);
+    }
+
+    @GetMapping("/updated/transaction")
+    public List<List<String>> getUpdatedTransaction(@RequestParam String fileName, @RequestParam(required = false) Optional<Double> minSup) {
+        String filePath = storageService.getPathToFile(fileName);
+        List<List<String>> dataset = fileService.readCsv(filePath);
+        int threshold = minSup.map(aDouble -> (int) (aDouble * dataset.size())).orElseGet(() -> (int) (0.02 * dataset.size()));
+        return preprocessingService.updateTransactionsAfterRemoveItem(dataset, threshold);
     }
 
     @GetMapping("/create")
-    public NodeDTO createTree(@RequestParam String fileName) {
+    public FPTreeDTO createTree(@RequestParam String fileName, @RequestParam(required = false) Optional<Double> minSup) {
         String filePath = storageService.getPathToFile(fileName);
-        List<List<String>> rawData = fpTree.readCsv(filePath);
-        List<List<String>> dataset = fpTree.updateTransactionsAfterRemoveItem(rawData, 0);
+        List<List<String>> rawData = fileService.readCsv(filePath);
+        int threshold = minSup.map(aDouble -> (int) (aDouble * rawData.size())).orElseGet(() -> (int) (0.02 * rawData.size()));
+        List<List<String>> dataset = preprocessingService.updateTransactionsAfterRemoveItem(rawData, threshold);
         Node rootEntity = new Node("root", 0, null);
 
-        return fpTree.createTree(rootEntity, dataset);
+        return preprocessingService.createTree(rootEntity, dataset);
     }
 
 //    public static void main(String[] args) {

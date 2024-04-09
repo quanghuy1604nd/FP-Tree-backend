@@ -2,13 +2,12 @@ package com.datamining.group4.entity;
 
 import lombok.*;
 
-import java.nio.file.Path;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CSVFile {
+public class Metadata {
     private String displayName;
     private String storedName;
+    private double minSup;
 
 }
