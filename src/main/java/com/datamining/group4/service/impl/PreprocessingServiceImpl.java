@@ -11,43 +11,19 @@ import java.util.*;
 
 @Service
 public class PreprocessingServiceImpl implements PreprocessingService {
-    @Autowired
-    private NodeConverter nodeConverter;
 
     @Override
-    public FPTreeDTO createTree(Node root, List<List<String>> data) {
-        for(List<String> transaction : data) {
-            Node p = root;
-            for(String item : transaction) {
-                if(p.getMapChildren().containsKey(item)) {
-                    Node child = p.getMapChildren().get(item);
-                    child.setSupportCount(child.getSupportCount() + 1);
-                }
-                else {
-                    Node newChild = new Node(item, 1, p);
-                    p.getMapChildren().put(item, newChild);
-                    p.getChildren().add(newChild);
-                }
-                p = p.getMapChildren().get(item);
-            }
-        }
-
-        return new FPTreeDTO(nodeConverter.toDto(root));
-    }
-
-
-
-    @Override
-    public HashMap<String, Integer> findItemFrequencies(List<List<String>> dataset) {
+    public HashMap<String, Integer> findItemFrequencies(List<List<String>> dataset, List<Integer> frequencies) {
         HashMap<String, Integer> itemFrequencies = new HashMap<>();
-        for(List<String> transaction : dataset) {
+        for(int i = 0; i < dataset.size(); i++) {
+            List<String> transaction = dataset.get(i);
             for(String item : transaction) {
                 if(itemFrequencies.containsKey(item)) {
                     int count = itemFrequencies.get(item);
-                    itemFrequencies.put(item, count + 1);
+                    itemFrequencies.put(item, count + frequencies.get(i));
                 }
                 else {
-                    itemFrequencies.put(item, 1);
+                    itemFrequencies.put(item, frequencies.get(i));
                 }
             }
         }
@@ -55,9 +31,9 @@ public class PreprocessingServiceImpl implements PreprocessingService {
     }
 
     @Override
-    public HashMap<String, Integer> findItemGreaterOrEqualThreshold(List<List<String>> dataset, int threshold) {
+    public HashMap<String, Integer> findItemGreaterOrEqualThreshold(List<List<String>> dataset, List<Integer> frequencies, int threshold) {
 
-        HashMap<String, Integer> itemFrequencies = findItemFrequencies(dataset),
+        HashMap<String, Integer> itemFrequencies = findItemFrequencies(dataset, frequencies),
                                  result = new HashMap<>();
         for(Map.Entry<String, Integer> entry : itemFrequencies.entrySet()) {
             if(entry.getValue() >= threshold) {
@@ -68,8 +44,8 @@ public class PreprocessingServiceImpl implements PreprocessingService {
     }
 
     @Override
-    public List<List<String>> updateTransactionsAfterRemoveItem(List<List<String>> source, int threshold) {
-        HashMap<String, Integer> map = findItemGreaterOrEqualThreshold(source, threshold);
+    public List<List<String>> updateTransactionsAfterRemoveItem(List<List<String>> source, List<Integer> frequencies, int threshold) {
+        HashMap<String, Integer> map = findItemGreaterOrEqualThreshold(source, frequencies, threshold);
         List<List<String>> updatedDataset = new ArrayList<>();
         for(List<String> transaction : source) {
             List<String> newTransaction = new ArrayList<>();

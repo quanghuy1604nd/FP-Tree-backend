@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 @Service
 public class FileServiceImpl implements FileService {
-    private static final String SPLIT_REGEX = ",";
+    private static final String SPLIT_REGEX = ",\\s*";
 
     @Override
     public List<List<String>> readCsv(String fileName) {

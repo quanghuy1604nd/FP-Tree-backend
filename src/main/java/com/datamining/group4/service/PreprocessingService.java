@@ -8,8 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public interface PreprocessingService {
-    FPTreeDTO createTree(Node root, List<List<String>> data);
-    HashMap<String, Integer> findItemFrequencies(List<List<String>> dataset);
-    HashMap<String, Integer> findItemGreaterOrEqualThreshold(List<List<String>> dataset, int threshold);
-    List<List<String>> updateTransactionsAfterRemoveItem(List<List<String>> dataset, int threshold);
+    HashMap<String, Integer> findItemFrequencies(List<List<String>> dataset, List<Integer> frequencies);
+    HashMap<String, Integer> findItemGreaterOrEqualThreshold(List<List<String>> dataset, List<Integer> frequencies, int threshold);
+    List<List<String>> updateTransactionsAfterRemoveItem(List<List<String>> dataset, List<Integer> frequencies, int threshold);
 }
