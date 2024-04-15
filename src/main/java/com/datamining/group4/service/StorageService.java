@@ -1,6 +1,6 @@
 package com.datamining.group4.service;
 
-import com.datamining.group4.entity.Metadata;
+import com.datamining.group4.dto.Metadata;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface StorageService {

@@ -1,4 +1,4 @@
-package com.datamining.group4.entity;
+package com.datamining.group4.dto;
 
 import lombok.*;
 

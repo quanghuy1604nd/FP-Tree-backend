@@ -13,30 +13,29 @@ import java.util.*;
 public class PreprocessingServiceImpl implements PreprocessingService {
 
     @Override
-    public HashMap<String, Integer> findItemFrequencies(List<List<String>> dataset, List<Integer> frequencies) {
+    public HashMap<String, Integer> findItemFrequencies(List<Itemset> dataset, List<Integer> frequencies) {
         HashMap<String, Integer> itemFrequencies = new HashMap<>();
-        for(int i = 0; i < dataset.size(); i++) {
-            List<String> transaction = dataset.get(i);
-            for(String item : transaction) {
-                if(itemFrequencies.containsKey(item)) {
+        for (int i = 0; i < dataset.size(); i++) {
+            List<String> itemset = dataset.get(i).getItemset();
+            for (String item : itemset) {
+                if (itemFrequencies.containsKey(item)) {
                     int count = itemFrequencies.get(item);
                     itemFrequencies.put(item, count + frequencies.get(i));
-                }
-                else {
+                } else {
                     itemFrequencies.put(item, frequencies.get(i));
                 }
             }
         }
+        System.out.println("Frequentcu:" + itemFrequencies);
         return itemFrequencies;
     }
 
     @Override
-    public HashMap<String, Integer> findItemGreaterOrEqualThreshold(List<List<String>> dataset, List<Integer> frequencies, int threshold) {
-
+    public HashMap<String, Integer> findItemGreaterOrEqualThreshold(List<Itemset> dataset, List<Integer> frequencies, int threshold) {
         HashMap<String, Integer> itemFrequencies = findItemFrequencies(dataset, frequencies),
-                                 result = new HashMap<>();
-        for(Map.Entry<String, Integer> entry : itemFrequencies.entrySet()) {
-            if(entry.getValue() >= threshold) {
+                result = new HashMap<>();
+        for (Map.Entry<String, Integer> entry : itemFrequencies.entrySet()) {
+            if (entry.getValue() >= threshold) {
                 result.put(entry.getKey(), entry.getValue());
             }
         }
@@ -44,28 +43,27 @@ public class PreprocessingServiceImpl implements PreprocessingService {
     }
 
     @Override
-    public List<List<String>> updateTransactionsAfterRemoveItem(List<List<String>> source, List<Integer> frequencies, int threshold) {
+    public List<Itemset> updateTransactionsAfterRemoveItem(List<Itemset> source, List<Integer> frequencies, int threshold) {
         HashMap<String, Integer> map = findItemGreaterOrEqualThreshold(source, frequencies, threshold);
-        List<List<String>> updatedDataset = new ArrayList<>();
-        for(List<String> transaction : source) {
+        List<Itemset> updatedDataset = new ArrayList<>();
+        for (int i = 0; i < source.size(); i++) {
+            Itemset itemset = source.get(i);
             List<String> newTransaction = new ArrayList<>();
-            for(String item : transaction) {
-                if(map.containsKey(item)) {
+            for (String item : itemset.getItemset()) {
+                if (map.containsKey(item)) {
                     newTransaction.add(item);
                 }
             }
-            if(!newTransaction.isEmpty()) {
-                newTransaction.sort(new Comparator<String>() {
-                    @Override
-                    public int compare(String o1, String o2) {
-                        int cnt1 = map.get(o1), cnt2 = map.get(o2);
-                        if(cnt1 == cnt2)
-                            return o1.compareTo(o2);
-                        return map.get(o2) - map.get(o1);
-                    }
-                });
-                updatedDataset.add(newTransaction);
-            }
+            newTransaction.sort(new Comparator<String>() {
+                @Override
+                public int compare(String o1, String o2) {
+                    int cnt1 = map.get(o1), cnt2 = map.get(o2);
+                    if (cnt1 == cnt2)
+                        return o1.compareTo(o2);
+                    return cnt2 - cnt1;
+                }
+            });
+            updatedDataset.add(new Itemset(newTransaction, frequencies.get(i)));
         }
         return updatedDataset;
     }

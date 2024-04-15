@@ -13,12 +13,18 @@ import java.util.List;
 public class FPTree {
     private Node root;
     private LinkedHashMap<String, Node> headerTable;
-    private int minSup;
+    private double minSup;
+    private int sizeOfTransactions;
 
-    public FPTree(int minSup) {
+    public int getThreshold() {
+        return (int) Math.ceil(this.minSup * this.sizeOfTransactions);
+    }
+
+    public FPTree(double minSup, int sizeOfTransactions) {
         this.root = new Node("null", 0, null);
         this.headerTable = new LinkedHashMap<>();
         this.minSup = minSup;
+        this.sizeOfTransactions = sizeOfTransactions;
     }
 
     public void addNodeToHeaderTable(String item, Node node) {
@@ -34,11 +40,11 @@ public class FPTree {
         }
 
     }
-    public void createTree(List<List<String>> data, List<Integer> frequency) {
+    public void createTree(List<Itemset> data, List<Integer> frequency) {
         for(int i = 0; i < data.size(); i++) {
-            List<String> transaction = data.get(i);
+            Itemset transaction = data.get(i);
             Node p = this.root;
-            for(String item : transaction) {
+            for(String item : transaction.getItemset()) {
                 if(p.getMapChildren().containsKey(item)) {
                     Node child = p.getMapChildren().get(item);
                     child.setSupportCount(child.getSupportCount() + frequency.get(i));
@@ -51,23 +57,7 @@ public class FPTree {
                 }
                 p = p.getMapChildren().get(item);
             }
-        }
-    }
-    public void createConditionalPatternsBase(List<List<String>> dataset) {
-        for(List<String> transaction : dataset) {
-            Node p = this.root;
-            for(String item : transaction) {
-                if(p.getMapChildren().containsKey(item)) {
-                    Node child = p.getMapChildren().get(item);
-                    child.setSupportCount(child.getSupportCount() + 1);
-                }
-                else {
-                    Node newChild = new Node(item, 1 , p);
-                    p.getMapChildren().put(item, newChild);
-                    p.getChildren().add(newChild);
-                }
-                p = p.getMapChildren().get(item);
-            }
+
         }
     }
 }

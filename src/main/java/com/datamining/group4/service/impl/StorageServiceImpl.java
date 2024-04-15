@@ -1,7 +1,7 @@
 package com.datamining.group4.service.impl;
 
 import com.datamining.group4.configuration.StorageProperties;
-import com.datamining.group4.entity.Metadata;
+import com.datamining.group4.dto.Metadata;
 import com.datamining.group4.exception.StorageException;
 import com.datamining.group4.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package com.datamining.group4.controller;
 
-import com.datamining.group4.entity.Metadata;
+import com.datamining.group4.dto.Metadata;
 import com.datamining.group4.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
