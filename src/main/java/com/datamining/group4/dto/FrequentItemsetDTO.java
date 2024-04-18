@@ -11,5 +11,10 @@ import java.util.List;
 @NoArgsConstructor
 public class FrequentItemsetDTO {
     private List<ItemsetDTO> frequentItemset;
+    private List<RuleDTO> rules;
     private long duration;
+    public FrequentItemsetDTO(List<ItemsetDTO> frequentItemset, List<RuleDTO> rules) {
+        this.frequentItemset = frequentItemset;
+        this.rules = rules;
+    }
 }

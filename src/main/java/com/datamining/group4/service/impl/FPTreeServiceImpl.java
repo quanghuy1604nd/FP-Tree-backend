@@ -2,14 +2,15 @@ package com.datamining.group4.service.impl;
 
 import com.datamining.group4.converter.FPTreeConverter;
 import com.datamining.group4.converter.ItemsetConverter;
+import com.datamining.group4.converter.RuleConverter;
 import com.datamining.group4.dto.FPTreeDTO;
 import com.datamining.group4.dto.FrequentItemsetDTO;
 import com.datamining.group4.dto.ItemsetDTO;
-import com.datamining.group4.entity.FPTree;
-import com.datamining.group4.entity.Itemset;
-import com.datamining.group4.entity.Node;
-import com.datamining.group4.entity.Pair;
+import com.datamining.group4.dto.RuleDTO;
+import com.datamining.group4.entity.*;
 import com.datamining.group4.service.FPTreeService;
+import com.datamining.group4.service.ItemSetService;
+import com.datamining.group4.service.NodeService;
 import com.datamining.group4.service.PreprocessingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,13 @@ public class FPTreeServiceImpl implements FPTreeService {
     @Autowired
     private ItemsetConverter itemsetConverter;
     @Autowired
+    private RuleConverter ruleConverter;
+    @Autowired
     private PreprocessingService preprocessingService;
+    @Autowired
+    private ItemSetService itemSetService;
+
+
     @Override
     public FPTreeDTO convertTree(FPTree tree) {
         return fpTreeConverter.toDto(tree);
@@ -35,47 +42,6 @@ public class FPTreeServiceImpl implements FPTreeService {
         fpTree.createTree(itemsetList, frequencies);
     }
 
-    @Override
-    public List<String> asendFpTree(Node node, String item) {
-        List<String> prefixPath = new ArrayList<>();
-        Node leaf = node;
-        while(leaf.getParent() != null) {
-            prefixPath.add(leaf.getItemName());
-            leaf = leaf.getParent();
-        }
-        return prefixPath.subList(1, prefixPath.size());
-    }
-
-    @Override
-    public Pair<List<Itemset>, List<Integer>> findPrefixPathsOfItem(FPTree fpTree, String item) {
-        List<Itemset> patterns = new ArrayList<>();
-        List<Integer> frequenciesOfEachPattern = new ArrayList<>();
-        LinkedHashMap<String, Node> headerTable = fpTree.getHeaderTable();
-        Node node = headerTable.get(item);
-        while(node != null) {
-            List<String> prefixPath = asendFpTree(node, item);
-            if(!prefixPath.isEmpty()) {
-                patterns.add(new Itemset(prefixPath, node.getSupportCount()));
-                frequenciesOfEachPattern.add(node.getSupportCount());
-            }
-
-            node = node.getLink();
-        }
-        return new Pair<>(patterns, frequenciesOfEachPattern);
-    }
-
-    @Override
-    public FrequentItemsetDTO generateFrequentItemsets(FPTree fpTree) {
-        List<Itemset> frequentItemList = new ArrayList<>();
-        long start = System.currentTimeMillis();
-        mineTree(fpTree, new HashSet<>(), frequentItemList);
-        long duration = System.currentTimeMillis() - start;
-        List<ItemsetDTO> updatedFrequentItemset = frequentItemList.stream().peek(x -> x.setSupport(x.getSupport() / fpTree.getSizeOfTransactions())).
-                map(itemsetConverter::toDto).toList();
-//        List<ItemsetDTO> updatedFrequentItemset = frequentItemList.stream().map(itemsetConverter::toDto).toList();
-
-        return new FrequentItemsetDTO(updatedFrequentItemset, duration);
-    }
 
     private int sumSupportCountOfItem(FPTree fpTree, String item) {
         Node p = fpTree.getHeaderTable().get(item);
@@ -104,7 +70,7 @@ public class FPTreeServiceImpl implements FPTreeService {
             int sumSupportOfItemInTree = this.sumSupportCountOfItem(fpTree, item);
 
             frequentItemList.add(new Itemset(newFreSet.stream().toList(), sumSupportOfItemInTree));
-            Pair<List<Itemset>, List<Integer>> prefixPaths = findPrefixPathsOfItem(fpTree, item);
+            Pair<List<Itemset>, List<Integer>> prefixPaths = itemSetService.findPrefixPathsOfItem(fpTree, item);
             List<Itemset> conditionalPatterns = prefixPaths.getKey();
             List<Integer> frequencies = prefixPaths.getValue();
             FPTree conditionalTree = new FPTree(fpTree.getMinSup(), fpTree.getSizeOfTransactions());

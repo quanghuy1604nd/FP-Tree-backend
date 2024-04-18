@@ -9,8 +9,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Rule {
-    private List<String> antecedence;
-    private List<String> consequence;
+    private Itemset antecedence;
+    private Itemset consequence;
     private double support;
     private double confident;
 }

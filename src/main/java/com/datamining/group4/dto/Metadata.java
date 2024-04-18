@@ -9,5 +9,5 @@ public class Metadata {
     private String displayName;
     private String storedName;
     private double minSup;
-
+    private double minConf;
 }

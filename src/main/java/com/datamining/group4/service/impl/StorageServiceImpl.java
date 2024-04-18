@@ -29,14 +29,14 @@ public class StorageServiceImpl implements StorageService {
     }
 
     @Override
-    public Metadata storeFile(MultipartFile file, double minSup) {
+    public Metadata storeFile(MultipartFile file, double minSup, double minConf) {
         try {
             if(file.isEmpty()) {
                 throw new StorageException("Cannot be empty");
             }
             String originalFileName = file.getOriginalFilename();
             String storedName = createUniqueFileName();
-            Metadata metadata = new Metadata(originalFileName, storedName, minSup);
+            Metadata metadata = new Metadata(originalFileName, storedName, minSup, minConf);
             FileOutputStream fos = new FileOutputStream(getPathToFile(storedName));
             fos.write(file.getBytes());
             return metadata;

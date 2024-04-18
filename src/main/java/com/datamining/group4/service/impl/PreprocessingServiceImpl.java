@@ -26,7 +26,6 @@ public class PreprocessingServiceImpl implements PreprocessingService {
                 }
             }
         }
-        System.out.println("Frequentcu:" + itemFrequencies);
         return itemFrequencies;
     }
 
