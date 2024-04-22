@@ -1,10 +1,8 @@
 package com.datamining.group4.controller;
 
 import com.datamining.group4.dto.FPTreeDTO;
-import com.datamining.group4.dto.FrequentItemsetDTO;
-import com.datamining.group4.dto.ItemsetDTO;
 import com.datamining.group4.entity.FPTree;
-import com.datamining.group4.entity.Itemset;
+import com.datamining.group4.entity.ItemSet;
 import com.datamining.group4.entity.Node;
 import com.datamining.group4.entity.Pair;
 import com.datamining.group4.service.*;
@@ -31,7 +29,7 @@ public class FPTController {
 
     private FPTree createTreeEntity(String fileName, Optional<Double> minSup) {
         String filePath = storageService.getPathToFile(fileName);
-        List<Itemset> dataset = fileService.findAll(filePath);
+        List<ItemSet> dataset = fileService.findAll(filePath);
         List<Integer> frequencies = Collections.nCopies(dataset.size(), 1);
         Node rootEntity = new Node("root", 0, null);
         LinkedHashMap<String, Node> headerTableEntity = new LinkedHashMap<>();
@@ -49,8 +47,8 @@ public class FPTController {
     @GetMapping("/create/{item}")
     public FPTreeDTO createPatterns(@PathVariable String item,  @RequestParam String fileName, @RequestParam(required = false) Optional<Double> minSup) {
         FPTree fpTree = this.createTreeEntity(fileName, minSup);
-        Pair<List<Itemset>, List<Integer>> prefix = itemSetService.findPrefixPathsOfItem(fpTree, item);
-        List<Itemset> patterns = prefix.getKey();
+        Pair<List<ItemSet>, List<Integer>> prefix = itemSetService.findPrefixPathsOfItem(fpTree, item);
+        List<ItemSet> patterns = prefix.getKey();
         List<Integer> frequencies = prefix.getValue();
         Node rootPatterns = new Node("root", 0, null);
         LinkedHashMap<String, Node> x = new LinkedHashMap<>();

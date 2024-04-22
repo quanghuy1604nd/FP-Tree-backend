@@ -2,7 +2,7 @@ package com.datamining.group4.service.impl;
 
 import com.datamining.group4.converter.RuleConverter;
 import com.datamining.group4.dto.RuleDTO;
-import com.datamining.group4.entity.Itemset;
+import com.datamining.group4.entity.ItemSet;
 import com.datamining.group4.entity.Pair;
 import com.datamining.group4.entity.Rule;
 import com.datamining.group4.service.ItemSetService;
@@ -26,7 +26,7 @@ public class RuleServiceImpl implements RuleService {
     }
 
 
-    private Rule createRule(StringBuilder pattern, Itemset itemset, int support) {
+    private Rule createRule(StringBuilder pattern, ItemSet itemset, int support) {
         List<String> antecedence = new ArrayList<>();
         List<String> consequence = new ArrayList<>();
 
@@ -38,9 +38,9 @@ public class RuleServiceImpl implements RuleService {
                 consequence.add(itemset.getItemset().get(i));
             }
         }
-        return new Rule(new Itemset(antecedence, 0), new Itemset(consequence, 0), support, -1);
+        return new Rule(new ItemSet(antecedence, 0), new ItemSet(consequence, 0), support, -1);
     }
-    private List<Rule> generateRulesOfFrequentItemSet(Itemset itemset, List<Itemset> itemsetList, double minConf) {
+    private List<Rule> generateRulesOfFrequentItemSet(ItemSet itemset, List<ItemSet> itemSetList, double minConf) {
         List<Rule> res = new ArrayList<>();
         int n = itemset.getItemset().size();
         Queue<Pair<StringBuilder, Integer>> q = new LinkedList<>();
@@ -56,7 +56,7 @@ public class RuleServiceImpl implements RuleService {
                 // nghĩa là không chia cho fpt.getSizeOfTransactions()
 
                 Rule rule = createRule(top.getKey(), itemset, (int) itemset.getSupport());
-                if(flag || checkRule(rule, itemsetList, (int) itemset.getSupport(), minConf)) {
+                if(flag || checkRule(rule, itemSetList, (int) itemset.getSupport(), minConf)) {
                     if(!flag) res.add(rule);
                     // thêm những nút con
                     for(int k = top.getValue() - 1; k >= 0; k--) {
@@ -75,26 +75,26 @@ public class RuleServiceImpl implements RuleService {
         return res;
     }
 
-    private boolean checkRule(Rule rule, List<Itemset> itemsetList, int itemSup, double minConf) {
+    private boolean checkRule(Rule rule, List<ItemSet> itemSetList, int itemSup, double minConf) {
         if(rule.getAntecedence().getItemset().isEmpty() || rule.getConsequence().getItemset().isEmpty())
             return false;
-        int antecedenceSup = itemSetService.getSupport(rule.getAntecedence(), itemsetList);
+        int antecedenceSup = itemSetService.getSupport(rule.getAntecedence(), itemSetList);
         double conf = itemSup * 1.0 / antecedenceSup;
         rule.setConfident(conf);
-        System.out.println(rule);
-        System.out.println(antecedenceSup + " " + conf);
+//        System.out.println(rule);
+//        System.out.println(antecedenceSup + " " + conf);
         return conf >= minConf;
     }
     @Override
-    public List<Rule> generateRuleOfItemSet(Itemset itemSet, List<Itemset> itemsetList, int itemSup, double minConf) {
+    public List<Rule> generateRuleOfItemSet(ItemSet itemSet, List<ItemSet> itemSetList, int itemSup, double minConf) {
         return null;
     }
 
     @Override
-    public List<RuleDTO> generateAllRules(List<Itemset> frequentItemSets, List<Itemset> dataset, double minConf) {
+    public List<RuleDTO> generateAllRules(List<ItemSet> frequentItemSets, List<ItemSet> dataset, double minConf) {
         List<Rule> rules = new ArrayList<>();
-        for(Itemset itemset : frequentItemSets) {
-            System.out.println(itemset.getSupport());
+        for(ItemSet itemset : frequentItemSets) {
+//            System.out.println(itemset.getSupport());
             rules.addAll(this.generateRulesOfFrequentItemSet(itemset, dataset, minConf));
         }
         return rules.stream().map(ruleConverter::toDto).toList();

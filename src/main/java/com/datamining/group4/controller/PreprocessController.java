@@ -1,6 +1,6 @@
 package com.datamining.group4.controller;
 
-import com.datamining.group4.entity.Itemset;
+import com.datamining.group4.entity.ItemSet;
 import com.datamining.group4.service.FileService;
 import com.datamining.group4.service.PreprocessingService;
 import com.datamining.group4.service.StorageService;
@@ -25,13 +25,13 @@ public class PreprocessController {
     @GetMapping("/detail")
     public HashMap<String, Integer> getDetailData(@RequestParam String fileName) {
         String filePath = storageService.getPathToFile(fileName);
-        List<Itemset> dataset = fileService.findAll(filePath);
+        List<ItemSet> dataset = fileService.findAll(filePath);
         List<Integer> frequencies = Collections.nCopies(dataset.size(), 1);
         return preprocessingService.findItemFrequencies(dataset, frequencies);
     }
 
     @GetMapping("/transactions")
-    public List<Itemset> getTransaction(@RequestParam String fileName, @RequestParam(required = false) Optional<Integer> numOfRecords) {
+    public List<ItemSet> getTransaction(@RequestParam String fileName, @RequestParam(required = false) Optional<Integer> numOfRecords) {
         String filePath = storageService.getPathToFile(fileName);
         return numOfRecords.map(num -> fileService.findFirstNItemset(filePath, num)).orElseGet(() -> fileService.findFirstNItemset(filePath, 10));
     }
@@ -39,16 +39,16 @@ public class PreprocessController {
     @GetMapping("/updated/detail")
     public HashMap<String, Integer> getUpdatedDetailData(@RequestParam String fileName, @RequestParam(required = false) Optional<Double> minSup) {
         String filePath = storageService.getPathToFile(fileName);
-        List<Itemset> dataset = fileService.findAll(filePath);
+        List<ItemSet> dataset = fileService.findAll(filePath);
         int threshold = minSup.map(aDouble -> (int) (aDouble * dataset.size())).orElseGet(() -> (int) (0.02 * dataset.size()));
         List<Integer> frequencies = Collections.nCopies(dataset.size(), 1);
         return preprocessingService.findItemGreaterOrEqualThreshold(dataset, frequencies, threshold);
     }
 
     @GetMapping("/updated/transaction")
-    public List<Itemset> getUpdatedTransaction(@RequestParam String fileName, @RequestParam(required = false) Optional<Double> minSup) {
+    public List<ItemSet> getUpdatedTransaction(@RequestParam String fileName, @RequestParam(required = false) Optional<Double> minSup) {
         String filePath = storageService.getPathToFile(fileName);
-        List<Itemset> dataset = fileService.findAll(filePath);
+        List<ItemSet> dataset = fileService.findAll(filePath);
         int threshold = minSup.map(aDouble -> (int) (aDouble * dataset.size())).orElseGet(() -> (int) (0.02 * dataset.size()));
         List<Integer> frequencies = Collections.nCopies(dataset.size(), 1);
         return preprocessingService.updateTransactionsAfterRemoveItem(dataset, frequencies, threshold);

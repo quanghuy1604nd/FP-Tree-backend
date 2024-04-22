@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class RuleConverter {
     @Autowired
-    private ItemsetConverter itemsetConverter;
+    private ItemSetConverter itemsetConverter;
     public RuleDTO toDto(Rule entity) {
         RuleDTO dto = new RuleDTO();
         dto.setAntecedence(itemsetConverter.toDto(entity.getAntecedence()));

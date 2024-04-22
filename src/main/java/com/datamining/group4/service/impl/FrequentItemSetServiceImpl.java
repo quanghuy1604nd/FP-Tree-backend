@@ -1,14 +1,12 @@
 package com.datamining.group4.service.impl;
 
-import com.datamining.group4.converter.ItemsetConverter;
-import com.datamining.group4.dto.FrequentItemsetDTO;
-import com.datamining.group4.dto.ItemsetDTO;
-import com.datamining.group4.dto.RuleDTO;
+import com.datamining.group4.converter.ItemSetConverter;
+import com.datamining.group4.dto.FrequentItemSetDTO;
+import com.datamining.group4.dto.ItemSetDTO;
 import com.datamining.group4.entity.FPTree;
-import com.datamining.group4.entity.Itemset;
+import com.datamining.group4.entity.ItemSet;
 import com.datamining.group4.service.FPTreeService;
 import com.datamining.group4.service.FrequentItemSetService;
-import com.datamining.group4.service.RuleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,20 +18,13 @@ public class FrequentItemSetServiceImpl implements FrequentItemSetService {
     @Autowired
     private FPTreeService fpTreeService;
     @Autowired
-    private ItemsetConverter itemsetConverter;
-    @Autowired
-    private RuleService ruleService;
+    private ItemSetConverter itemsetConverter;
     @Override
-    public FrequentItemsetDTO generateFrequentItemSets(FPTree fpTree, List<Itemset> dataset, double minConf) {
-        List<Itemset> frequentItemList = new ArrayList<>();
-        long start = System.currentTimeMillis();
+    public FrequentItemSetDTO generateFrequentItemSets(FPTree fpTree, List<ItemSet> dataset, double minConf) {
+        List<ItemSet> frequentItemList = new ArrayList<>();
         fpTreeService.mineTree(fpTree, new HashSet<>(), frequentItemList);
-        long duration = System.currentTimeMillis() - start;
-//        List<ItemsetDTO> updatedFrequentItemset = frequentItemList.stream().peek(x -> x.setSupport(x.getSupport() / fpTree.getSizeOfTransactions())).
-//                map(itemsetConverter::toDto).toList();
-        List<RuleDTO> rules = ruleService.generateAllRules(frequentItemList, dataset, minConf);
-        List<ItemsetDTO> updatedFrequentItemset = frequentItemList.stream().map(itemsetConverter::toDto).toList();
-        return new FrequentItemsetDTO(updatedFrequentItemset, rules);
+        List<ItemSetDTO> updatedFrequentItemSet = frequentItemList.stream().map(itemsetConverter::toDto).toList();
+        return new FrequentItemSetDTO(updatedFrequentItemSet);
     }
 
 }

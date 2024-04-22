@@ -1,14 +1,12 @@
 package com.datamining.group4.service.impl;
 
 import com.datamining.group4.entity.FPTree;
-import com.datamining.group4.entity.Itemset;
+import com.datamining.group4.entity.ItemSet;
 import com.datamining.group4.entity.Node;
 import com.datamining.group4.entity.Pair;
-import com.datamining.group4.service.FPTreeService;
 import com.datamining.group4.service.ItemSetService;
 import com.datamining.group4.service.NodeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,10 +18,10 @@ public class ItemSetServiceImpl implements ItemSetService {
     @Autowired
     private NodeService nodeService;
     @Override
-    public int getSupport(Itemset itemset, List<Itemset> itemsetList) {
+    public int getSupport(ItemSet itemset, List<ItemSet> itemSetList) {
         if(itemset.getItemset().isEmpty()) return 0;
         int cnt = 0;
-        for(Itemset x : itemsetList) {
+        for(ItemSet x : itemSetList) {
             if(new HashSet<>(x.getItemset()).containsAll(itemset.getItemset())) {
                 cnt++;
             }
@@ -32,15 +30,15 @@ public class ItemSetServiceImpl implements ItemSetService {
     }
 
     @Override
-    public Pair<List<Itemset>, List<Integer>> findPrefixPathsOfItem(FPTree fpTree, String item) {
-        List<Itemset> patterns = new ArrayList<>();
+    public Pair<List<ItemSet>, List<Integer>> findPrefixPathsOfItem(FPTree fpTree, String item) {
+        List<ItemSet> patterns = new ArrayList<>();
         List<Integer> frequenciesOfEachPattern = new ArrayList<>();
         LinkedHashMap<String, Node> headerTable = fpTree.getHeaderTable();
         Node node = headerTable.get(item);
         while(node != null) {
             List<String> prefixPath = nodeService.asendFpTree(node, item);
             if(!prefixPath.isEmpty()) {
-                patterns.add(new Itemset(prefixPath, node.getSupportCount()));
+                patterns.add(new ItemSet(prefixPath, node.getSupportCount()));
                 frequenciesOfEachPattern.add(node.getSupportCount());
             }
 

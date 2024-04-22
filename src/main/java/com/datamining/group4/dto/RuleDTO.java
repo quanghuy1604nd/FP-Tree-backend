@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RuleDTO {
-    private ItemsetDTO antecedence;
-    private ItemsetDTO consequence;
+    private ItemSetDTO antecedence;
+    private ItemSetDTO consequence;
     private double support;
     private double confident;
 }

@@ -40,9 +40,9 @@ public class FPTree {
         }
 
     }
-    public void createTree(List<Itemset> data, List<Integer> frequency) {
+    public void createTree(List<ItemSet> data, List<Integer> frequency) {
         for(int i = 0; i < data.size(); i++) {
-            Itemset transaction = data.get(i);
+            ItemSet transaction = data.get(i);
             Node p = this.root;
             for(String item : transaction.getItemset()) {
                 if(p.getMapChildren().containsKey(item)) {
