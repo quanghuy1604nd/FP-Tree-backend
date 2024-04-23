@@ -6,10 +6,11 @@ import lombok.NoArgsConstructor;
 
 import java.util.HashMap;
 import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ItemSet {
-    private List<String> itemset;
-    private double support;
+public class DataEntity {
+    private List<ItemSet> listItemSet;
+    private HashMap<String, Integer> supportCount = new HashMap<>();
 }

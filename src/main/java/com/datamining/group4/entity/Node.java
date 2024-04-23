@@ -1,7 +1,6 @@
 package com.datamining.group4.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import java.util.ArrayList;
