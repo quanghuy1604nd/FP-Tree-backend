@@ -26,8 +26,6 @@ public class FrequentItemSetController {
     private StorageService storageService;
     @Autowired
     private FrequentItemSetService frequentItemSetService;
-    @Autowired
-    private IAprioriService aprioriService;
 
 
     @GetMapping("/frequent-items")
@@ -54,15 +52,4 @@ public class FrequentItemSetController {
         return frequentItemSets;
     }
 
-    @GetMapping("/frequent-itemSet-apriori")
-    public FrequentItemSetDTO getFrequentItemSetsApriori(@RequestParam("fileName") String fileName, @RequestParam("minSup") Optional<Double> minSup) {
-        String filePath = storageService.getPathToFile(fileName);
-        DataEntity dataset = fileService.findAllTransactions(filePath);
-
-        long timeStart = System.currentTimeMillis();
-        FrequentItemSetDTO frequentItemSets = aprioriService.generateFrequentItemSets(dataset.getListItemSet(), minSup.orElse(0.02), dataset.getSupportCount());
-        long duration = System.currentTimeMillis() - timeStart;
-        frequentItemSets.setDuration(duration);
-        return frequentItemSets;
-    }
 }

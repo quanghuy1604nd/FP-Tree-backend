@@ -3,16 +3,15 @@ package com.datamining.group4.service.impl;
 import com.datamining.group4.dto.FrequentItemSetDTO;
 import com.datamining.group4.dto.ItemSetDTO;
 import com.datamining.group4.entity.ItemSet;
-import com.datamining.group4.service.IAprioriService;
 import org.springframework.stereotype.Service;
-import org.springframework.util.concurrent.ListenableFutureTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Stack;
 
 @Service
-public class AprioriService implements IAprioriService {
+public class AprioriServiceImpl implements com.datamining.group4.service.AprioriService {
     private Boolean checkCanAddToCandidate = true;
     @Override
     public FrequentItemSetDTO generateFrequentItemSets(List<ItemSet> transactions, double minsup, HashMap<String, Integer> supportOfOneItem) {
@@ -105,24 +104,38 @@ public class AprioriService implements IAprioriService {
 
     // kiểm tra xem có tập con nào của tập itemSet có k phần tử không tồn tại trong tập k-1 phần tử
     public void solveCheckReduceCandidate(List<String> candidate, List<List<String>> prevFrequentItemSet) {
-        int k = 1;
-        while (k <= candidate.size() - 1) {
-            Try(1, k, candidate.size(), new ArrayList<>(), candidate, prevFrequentItemSet);
-            k++;
-        }
+        int k = candidate.size() - 1;
+        Try(1, k, candidate.size(), new ArrayList<>(), candidate, prevFrequentItemSet);
     }
     private void Try(int h, int k, int n, List<String> tmp, List<String> src, List<List<String>> prevFrequentItemSet) {
-        if(tmp.size() == k) {
-            // TH tập con của tập itemset không tồn tại trong tập frequent itemSet có k-1 phần tử
-            if(!checkContains(prevFrequentItemSet, tmp)) {
-                checkCanAddToCandidate = false;
+        Stack<Integer> stack = new Stack<>();
+        stack.push(h);
+        while(!stack.isEmpty()) {
+            int current = stack.peek();
+            if(tmp.size() == k) {
+                if(!checkContains(prevFrequentItemSet, tmp)) {
+                    checkCanAddToCandidate = false;
+                    return;
+                }
+                stack.pop();
+                if(!stack.isEmpty()) {
+                    int prev = stack.pop();
+                    stack.push(prev + 1);
+                    tmp.remove(tmp.size() - 1);
+                }
+                continue;
             }
-            return;
-        }
-        for(int i = h; i <= n; i++) {
-            tmp.add(src.get(i-1));
-            Try(h+1, k, n, tmp, src, prevFrequentItemSet);
-            tmp.remove(tmp.size() - 1);
+            if(current > n) {
+                stack.pop();
+                if(!stack.isEmpty()) {
+                    int prev = stack.pop();
+                    stack.push(prev + 1);
+                    tmp.remove(tmp.size() - 1);
+                }
+                continue;
+            }
+            tmp.add(src.get(current - 1));
+            stack.push(current + 1);
         }
     }
     private boolean checkContains(List<List<String>> prevFrequentItemSet, List<String> currentItemSet) {
