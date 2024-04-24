@@ -47,7 +47,7 @@ public class RuleController {
         LinkedHashMap<String, Node> headerTableEntity = new LinkedHashMap<>();
         FPTree fpTree = new FPTree(rootEntity, headerTableEntity, minSup.orElse(0.02), dataset.size());
         fpTreeService.constructTree(fpTree, dataset, frequencies);
-        FrequentItemSet frequentItemSet = frequentItemSetConverter.toEntity(frequentItemSetService.generateFrequentItemSets(fpTree, dataset, minConf.orElse(0.5)));
+        FrequentItemSet frequentItemSet = frequentItemSetConverter.toEntity(frequentItemSetService.generateFrequentItemSets(fpTree));
         return ruleService.generateAllRules(frequentItemSet.getFrequentItemSet(), dataset, minConf.orElse(0.5));
     }
 }

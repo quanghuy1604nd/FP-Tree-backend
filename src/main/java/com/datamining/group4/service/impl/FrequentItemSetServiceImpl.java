@@ -20,7 +20,7 @@ public class FrequentItemSetServiceImpl implements FrequentItemSetService {
     @Autowired
     private ItemSetConverter itemsetConverter;
     @Override
-    public FrequentItemSetDTO generateFrequentItemSets(FPTree fpTree, List<ItemSet> dataset, double minConf) {
+    public FrequentItemSetDTO generateFrequentItemSets(FPTree fpTree) {
         List<ItemSet> frequentItemList = new ArrayList<>();
         fpTreeService.mineTree(fpTree, new HashSet<>(), frequentItemList);
         List<ItemSetDTO> updatedFrequentItemSet = frequentItemList.stream().map(itemsetConverter::toDto).toList();

@@ -51,4 +51,9 @@ public class StorageServiceImpl implements StorageService {
     public String getPathToFile(String fileName) {
         return path.toString() +'/'+ fileName;
     }
+
+    @Override
+    public boolean isExist(String fileName) {
+        return false;
+    }
 }

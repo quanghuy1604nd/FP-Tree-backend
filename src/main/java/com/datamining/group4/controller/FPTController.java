@@ -39,13 +39,16 @@ public class FPTController {
     }
 
     @GetMapping("/create")
-    public FPTreeDTO createTree(@RequestParam String fileName, @RequestParam(required = false) Optional<Double> minSup) {
+    public FPTreeDTO createTree(@RequestParam String fileName,
+                                @RequestParam(required = false) Optional<Double> minSup) {
         FPTree fpTree = this.createTreeEntity(fileName, minSup);
         return fpTreeService.convertTree(fpTree);
     }
 
     @GetMapping("/create/{item}")
-    public FPTreeDTO createPatterns(@PathVariable String item,  @RequestParam String fileName, @RequestParam(required = false) Optional<Double> minSup) {
+    public FPTreeDTO createPatterns(@PathVariable String item,
+                                    @RequestParam String fileName,
+                                    @RequestParam(required = false) Optional<Double> minSup) {
         FPTree fpTree = this.createTreeEntity(fileName, minSup);
         Pair<List<ItemSet>, List<Integer>> prefix = itemSetService.findPrefixPathsOfItem(fpTree, item);
         List<ItemSet> patterns = prefix.getKey();

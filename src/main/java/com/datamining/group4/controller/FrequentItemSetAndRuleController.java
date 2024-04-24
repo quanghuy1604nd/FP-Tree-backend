@@ -34,7 +34,7 @@ public class FrequentItemSetAndRuleController {
     private FrequentItemSetConverter frequentItemSetConverter;
 
     @GetMapping("/rules")
-    public FrequentItemSetAndRuleDTO getAllRules(@RequestParam String fileName,
+    public FrequentItemSetAndRuleDTO getAllFrequentItemSetsAndRules(@RequestParam String fileName,
                                      @RequestParam(required = false) Optional<Double> minSup,
                                      @RequestParam(required = false) Optional<Double> minConf) {
         String filePath = storageService.getPathToFile(fileName);
@@ -49,7 +49,7 @@ public class FrequentItemSetAndRuleController {
         LinkedHashMap<String, Node> headerTableEntity = new LinkedHashMap<>();
         FPTree fpTree = new FPTree(rootEntity, headerTableEntity, minSup.orElse(0.02), dataset.size());
         fpTreeService.constructTree(fpTree, dataset, frequencies);
-        FrequentItemSetDTO frequentItemSetDTO = frequentItemSetService.generateFrequentItemSets(fpTree, dataset, minConf.orElse(0.5));
+        FrequentItemSetDTO frequentItemSetDTO = frequentItemSetService.generateFrequentItemSets(fpTree);
         FrequentItemSet frequentItemSet = frequentItemSetConverter.toEntity(frequentItemSetDTO);
         List<RuleDTO> ruleDTOS = ruleService.generateAllRules(frequentItemSet.getFrequentItemSet(), dataset, minConf.orElse(0.5));
 

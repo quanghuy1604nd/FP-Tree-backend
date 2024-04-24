@@ -7,5 +7,5 @@ import com.datamining.group4.entity.ItemSet;
 import java.util.List;
 
 public interface FrequentItemSetService {
-    FrequentItemSetDTO generateFrequentItemSets(FPTree fpTree, List<ItemSet> dataset, double minConf);
+    FrequentItemSetDTO generateFrequentItemSets(FPTree fpTree);
 }

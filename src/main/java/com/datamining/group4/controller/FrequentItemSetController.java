@@ -48,7 +48,7 @@ public class FrequentItemSetController {
         FPTree fpTree = new FPTree(rootEntity, headerTableEntity, minSup.orElse(0.02), dataset.size());
         fpTreeService.constructTree(fpTree, dataset, frequencies);
 
-        FrequentItemSetDTO frequentItemSets = frequentItemSetService.generateFrequentItemSets(fpTree, dataset, minConf.orElse(0.5));
+        FrequentItemSetDTO frequentItemSets = frequentItemSetService.generateFrequentItemSets(fpTree);
         long duration = System.currentTimeMillis() - start;
         frequentItemSets.setDuration(duration);
         return frequentItemSets;
