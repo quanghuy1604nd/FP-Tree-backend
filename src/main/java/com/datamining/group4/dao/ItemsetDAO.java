@@ -41,22 +41,4 @@ public class ItemsetDAO {
         }
         return records;
     }
-    public DataEntity findAllTransactionAndSupport(String fileName) {
-        DataEntity data = new DataEntity();
-        List<ItemSet> records = new ArrayList<>();
-        try(BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName))) {
-            String line;
-            while((line = bufferedReader.readLine()) != null) {
-                String[] values = line.split(SPLIT_REGEX);
-                for(int i = 0; i < values.length; i++) {
-                    data.getSupportCount().put(values[i], data.getSupportCount().getOrDefault(values[i], 0) + 1);
-                }
-                records.add(new ItemSet(Arrays.asList(values), 0));
-            }
-            data.setListItemSet(records);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return data;
-    }
 }

@@ -5,18 +5,20 @@ import com.datamining.group4.dto.ItemSetDTO;
 import com.datamining.group4.entity.ItemSet;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 @Service
 public class AprioriServiceImpl implements com.datamining.group4.service.AprioriService {
     private Boolean checkCanAddToCandidate = true;
+    private List<List<String>> prevFrequentItemSet = null;
+    private HashSet<List<String>> prevFrequentItemSetHashSet = null;
+    private FrequentItemSetDTO frequentItemSetDTO = null;
     @Override
     public FrequentItemSetDTO generateFrequentItemSets(List<ItemSet> transactions, double minsup, HashMap<String, Integer> supportOfOneItem) {
-        List<List<String>> prevFrequentItemSet = new ArrayList<>();
-        FrequentItemSetDTO frequentItemSetDTO = new FrequentItemSetDTO();
+        // khởi tạo
+        prevFrequentItemSet = new ArrayList<>();
+        prevFrequentItemSetHashSet = new HashSet<>();
+        frequentItemSetDTO = new FrequentItemSetDTO();
         minsup = Math.ceil(minsup * transactions.size());
         // lấy ra tập frequent itemSet có 1 phần tử
         List<ItemSetDTO> frequentItemSet = new ArrayList<>();
@@ -27,32 +29,33 @@ public class AprioriServiceImpl implements com.datamining.group4.service.Apriori
                 ItemSetDTO itemSetDTO = new ItemSetDTO(itemSet, supportOfOneItem.get(str));
                 frequentItemSet.add(itemSetDTO);
                 prevFrequentItemSet.add(itemSet);
+                prevFrequentItemSetHashSet.add(itemSet);
             }
         }
         frequentItemSetDTO.setFrequentItemSet(frequentItemSet);
-        frequentItemSetDTO = run(prevFrequentItemSet, transactions, frequentItemSetDTO, minsup);
-        return  frequentItemSetDTO;
+        run(transactions, minsup);
+        return frequentItemSetDTO;
     }
 
-    private FrequentItemSetDTO run(List<List<String>> prevFrequentItemSet, List<ItemSet> transactions, FrequentItemSetDTO frequentItemSetDTO, double minsup) {
+    private void run(List<ItemSet> transactions, double minsup) {
         int k = 2;
         while (true) {
             HashMap<List<String>, Integer> supportCount = new HashMap<>();
             // lấy ra tập frequent itemSet có k phần tử
-            List<List<String>> candidates = generateFrequentItemSetsWithKItem(k, prevFrequentItemSet);
+            List<List<String>> candidates =generateFrequentItemSetsWithKItem(k);
             prevFrequentItemSet.clear();
+            prevFrequentItemSetHashSet.clear();
             if(candidates.size() <= 0) {
-                return frequentItemSetDTO;
+                return;
             }
             // đếm support count của từng itemSet trong tập frequent itemSet tìm đươc
-            for(List<String> itemSet : candidates) {
+            for(List<String> itemSet : candidates) { // itemSet có k phần tử
                for(ItemSet transaction : transactions) {
                    if(checkContainsInTransaction(transaction.getItemset(), itemSet)) {
                        supportCount.put(itemSet, supportCount.getOrDefault(itemSet, 0) + 1);
                    }
                }
             }
-
             List<ItemSetDTO> frequentItemSet = frequentItemSetDTO.getFrequentItemSet();
             // kiểm tra xem tập itemset nào thỏa mãn có supportCount >= minsup không
             for(List<String> itemSet : supportCount.keySet()) {
@@ -60,6 +63,7 @@ public class AprioriServiceImpl implements com.datamining.group4.service.Apriori
                     ItemSetDTO itemSetDTO = new ItemSetDTO(itemSet, supportCount.get(itemSet));
                     frequentItemSet.add(itemSetDTO);
                     prevFrequentItemSet.add(itemSet);
+                    prevFrequentItemSetHashSet.add(itemSet);
                 }
             }
             frequentItemSetDTO.setFrequentItemSet(frequentItemSet);
@@ -68,10 +72,15 @@ public class AprioriServiceImpl implements com.datamining.group4.service.Apriori
     }
     // kiểm tra xem tập itemSet có tồn tại trong tập transaction không
     private boolean checkContainsInTransaction(List<String> transaction, List<String> currentItemSet) {
-        return transaction.containsAll(currentItemSet);
+        for(String item : currentItemSet) {
+            if(!transaction.contains(item)) {
+                return false;
+            }
+        }
+        return true;
     }
 
-    private List<List<String>> generateFrequentItemSetsWithKItem(int k, List<List<String>> prevFrequentItemSet) {
+    private List<List<String>> generateFrequentItemSetsWithKItem(int k) {
         int size = prevFrequentItemSet.size();
         List<List<String>> candidates = new ArrayList<>();
         for(int i = 0; i < size - 1; i++) {
@@ -91,29 +100,50 @@ public class AprioriServiceImpl implements com.datamining.group4.service.Apriori
                     tmp.add(itemSet2.get(itemSet2.size() - 1));
                     // reduce number itemSet in candidate
                     checkCanAddToCandidate = true;
-                    solveCheckReduceCandidate(tmp, prevFrequentItemSet);
+                    solveCheckReduceCandidate(tmp);
                     if(checkCanAddToCandidate) {
                         candidates.add(tmp);
                     }
                 }
             }
-
         }
         return candidates;
     }
 
     // kiểm tra xem có tập con nào của tập itemSet có k phần tử không tồn tại trong tập k-1 phần tử
-    public void solveCheckReduceCandidate(List<String> candidate, List<List<String>> prevFrequentItemSet) {
-        int k = candidate.size() - 1;
-        Try(1, k, candidate.size(), new ArrayList<>(), candidate, prevFrequentItemSet);
+    public void solveCheckReduceCandidate(List<String> candidate) {
+        int k = candidate.size();
+        HashMap<String, Integer> test = new HashMap<>();
+        for(String item : candidate) {
+            test.put(item, 1);
+        }
+        for (String item : candidate) {
+            test.remove(item);
+            if(!checkContains(new ArrayList<>(test.keySet()))) {
+                checkCanAddToCandidate = false;
+                return;
+            }
+            test.put(item, 1);
+        }
     }
-    private void Try(int h, int k, int n, List<String> tmp, List<String> src, List<List<String>> prevFrequentItemSet) {
+    // kiểm tra tập itemSet có tồn tại trong tập Frequent itemSet có k - 1 phần tử không
+    private boolean checkContains(List<String> currentItemSet) {
+        for(List<String> itemSet : prevFrequentItemSet) {
+            Collections.sort(itemSet);
+            if (checkContainsInTransaction(itemSet, currentItemSet)) {
+                return true;
+            }
+        }
+        return false;
+//        return prevFrequentItemSet.contains(currentItemSet);
+    }
+    private void Try(int h, int k, int n, List<String> tmp, List<String> src) {
         Stack<Integer> stack = new Stack<>();
         stack.push(h);
         while(!stack.isEmpty()) {
             int current = stack.peek();
             if(tmp.size() == k) {
-                if(!checkContains(prevFrequentItemSet, tmp)) {
+                if(!checkContains(tmp)) {
                     checkCanAddToCandidate = false;
                     return;
                 }
@@ -138,12 +168,5 @@ public class AprioriServiceImpl implements com.datamining.group4.service.Apriori
             stack.push(current + 1);
         }
     }
-    private boolean checkContains(List<List<String>> prevFrequentItemSet, List<String> currentItemSet) {
-        for(List<String> itemSet : prevFrequentItemSet) {
-            if(itemSet.containsAll(currentItemSet)) {
-                return true;
-            }
-        }
-        return false;
-    }
+
 }

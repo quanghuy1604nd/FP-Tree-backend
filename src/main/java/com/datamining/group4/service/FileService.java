@@ -8,6 +8,5 @@ import java.util.List;
 public interface FileService {
     List<ItemSet> findAll(String fileName);
     List<ItemSet> findFirstNItemset(String fileName, int numOfRecords);
-    DataEntity findAllTransactions(String fileName);
 
 }

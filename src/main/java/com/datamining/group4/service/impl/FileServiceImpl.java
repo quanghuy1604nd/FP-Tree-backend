@@ -22,9 +22,4 @@ public class FileServiceImpl implements FileService {
         return itemsetDAO.findFirstNItemsets(fileName, numOfRecords);
     }
 
-    @Override
-    public DataEntity findAllTransactions(String fileName) {
-        return itemsetDAO.findAllTransactionAndSupport(fileName);
-    }
-
 }
