@@ -3,16 +3,15 @@ package com.datamining.group4.service.impl;
 import com.datamining.group4.dto.FrequentItemSetDTO;
 import com.datamining.group4.dto.ItemSetDTO;
 import com.datamining.group4.entity.ItemSet;
-import com.datamining.group4.service.IAprioriService;
+import com.datamining.group4.service.AprioriService;
 import org.springframework.stereotype.Service;
-import org.springframework.util.concurrent.ListenableFutureTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 @Service
-public class AprioriService implements IAprioriService {
+public class AprioriServiceIpml implements AprioriService {
     private Boolean checkCanAddToCandidate = true;
     @Override
     public FrequentItemSetDTO generateFrequentItemSets(List<ItemSet> transactions, double minsup, HashMap<String, Integer> supportOfOneItem) {
