@@ -24,6 +24,8 @@ public class FrequentItemSetServiceImpl implements FrequentItemSetService {
         List<ItemSet> frequentItemList = new ArrayList<>();
         fpTreeService.mineTree(fpTree, new HashSet<>(), frequentItemList);
         List<ItemSetDTO> updatedFrequentItemSet = frequentItemList.stream().map(itemsetConverter::toDto).toList();
+//        List<ItemSetDTO> updatedFrequentItemSet = frequentItemList.stream().peek(x -> x.setSupport(x.getSupport() / fpTree.getSizeOfTransactions()))
+//                .map(itemsetConverter::toDto).toList();
         return new FrequentItemSetDTO(updatedFrequentItemSet);
     }
 

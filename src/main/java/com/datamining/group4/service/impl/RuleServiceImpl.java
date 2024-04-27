@@ -10,10 +10,8 @@ import com.datamining.group4.service.RuleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
+
 @Service
 public class RuleServiceImpl implements RuleService {
     @Autowired

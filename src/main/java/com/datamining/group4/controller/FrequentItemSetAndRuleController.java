@@ -37,7 +37,7 @@ public class FrequentItemSetAndRuleController {
     public FrequentItemSetAndRuleDTO getAllFrequentItemSetsAndRules(@RequestParam String fileName,
                                      @RequestParam(required = false) Optional<Double> minSup,
                                      @RequestParam(required = false) Optional<Double> minConf) {
-        String filePath = storageService.getPathToFile(fileName);
+        String filePath = storageService.getPathToInputFile(fileName);
         List<ItemSet> dataset = fileService.findAll(filePath);
 
         // bắt đầu tính thời gian cho thuật toán
@@ -52,7 +52,6 @@ public class FrequentItemSetAndRuleController {
         FrequentItemSetDTO frequentItemSetDTO = frequentItemSetService.generateFrequentItemSets(fpTree);
         FrequentItemSet frequentItemSet = frequentItemSetConverter.toEntity(frequentItemSetDTO);
         List<RuleDTO> ruleDTOS = ruleService.generateAllRules(frequentItemSet.getFrequentItemSet(), dataset, minConf.orElse(0.5));
-
         long duration = System.currentTimeMillis() - start;
         return new FrequentItemSetAndRuleDTO(frequentItemSetDTO, ruleDTOS, duration);
 

@@ -8,9 +8,13 @@ import com.datamining.group4.service.FPTreeService;
 import com.datamining.group4.service.FileService;
 import com.datamining.group4.service.FrequentItemSetService;
 import com.datamining.group4.service.StorageService;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -35,7 +39,7 @@ public class FrequentItemSetController {
                                                   @RequestParam(required = false) Optional<Double> minSup,
                                                   @RequestParam(required = false) Optional<Double> minConf) {
 
-        String filePath = storageService.getPathToFile(fileName);
+        String filePath = storageService.getPathToInputFile(fileName);
         List<ItemSet> dataset = fileService.findAll(filePath);
 
         // bắt đầu tính thời gian cho thuật toán
@@ -47,10 +51,16 @@ public class FrequentItemSetController {
         LinkedHashMap<String, Node> headerTableEntity = new LinkedHashMap<>();
         FPTree fpTree = new FPTree(rootEntity, headerTableEntity, minSup.orElse(0.02), dataset.size());
         fpTreeService.constructTree(fpTree, dataset, frequencies);
-
         FrequentItemSetDTO frequentItemSets = frequentItemSetService.generateFrequentItemSets(fpTree);
+        frequentItemSets.setFrequentItemSet(frequentItemSets.getFrequentItemSet().stream().peek(x -> x.setSupport(x.getSupport() / fpTree.getSizeOfTransactions())).toList());
         long duration = System.currentTimeMillis() - start;
         frequentItemSets.setDuration(duration);
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        try(FileWriter fileWriter = new FileWriter(storageService.getPathToFrequentItemSetsFPGrowthFile(fileName))) {
+            gson.toJson(frequentItemSets, fileWriter);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         return frequentItemSets;
     }
 }

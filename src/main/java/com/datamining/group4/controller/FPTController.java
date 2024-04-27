@@ -7,9 +7,13 @@ import com.datamining.group4.entity.Node;
 import com.datamining.group4.entity.Pair;
 import com.datamining.group4.service.*;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
 @RestController
@@ -28,7 +32,7 @@ public class FPTController {
     private ItemSetService itemSetService;
 
     private FPTree createTreeEntity(String fileName, Optional<Double> minSup) {
-        String filePath = storageService.getPathToFile(fileName);
+        String filePath = storageService.getPathToInputFile(fileName);
         List<ItemSet> dataset = fileService.findAll(filePath);
         List<Integer> frequencies = Collections.nCopies(dataset.size(), 1);
         Node rootEntity = new Node("root", 0, null);
@@ -42,7 +46,14 @@ public class FPTController {
     public FPTreeDTO createTree(@RequestParam String fileName,
                                 @RequestParam(required = false) Optional<Double> minSup) {
         FPTree fpTree = this.createTreeEntity(fileName, minSup);
-        return fpTreeService.convertTree(fpTree);
+        FPTreeDTO treeDTO = fpTreeService.convertTree(fpTree);
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        try(FileWriter fileWriter = new FileWriter(storageService.getPathToTreeFile(fileName))) {
+            gson.toJson(treeDTO, fileWriter);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return treeDTO;
     }
 
     @GetMapping("/create/{item}")

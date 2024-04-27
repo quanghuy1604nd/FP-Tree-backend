@@ -2,7 +2,6 @@ package com.datamining.group4.controller;
 
 
 import com.datamining.group4.converter.FrequentItemSetConverter;
-import com.datamining.group4.dto.FrequentItemSetDTO;
 import com.datamining.group4.dto.RuleDTO;
 import com.datamining.group4.entity.FPTree;
 import com.datamining.group4.entity.FrequentItemSet;
@@ -38,7 +37,7 @@ public class RuleController {
     public List<RuleDTO> getAllRules(@RequestParam String fileName,
                                      @RequestParam(required = false) Optional<Double> minSup,
                                      @RequestParam(required = false) Optional<Double> minConf) {
-        String filePath = storageService.getPathToFile(fileName);
+        String filePath = storageService.getPathToInputFile(fileName);
         List<ItemSet> dataset = fileService.findAll(filePath);
 
         // mặc dịnh ban đầu tần suất của mỗi giao dịch là 1
