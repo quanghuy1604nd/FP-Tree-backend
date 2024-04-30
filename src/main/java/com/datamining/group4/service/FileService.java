@@ -1,6 +1,5 @@
 package com.datamining.group4.service;
 
-import com.datamining.group4.entity.DataEntity;
 import com.datamining.group4.entity.ItemSet;
 
 import java.util.List;

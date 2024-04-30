@@ -1,7 +1,6 @@
 package com.datamining.group4.controller;
 
 import com.datamining.group4.dto.FrequentItemSetDTO;
-import com.datamining.group4.entity.DataEntity;
 import com.datamining.group4.entity.ItemSet;
 import com.datamining.group4.service.AprioriService;
 import com.datamining.group4.service.FileService;

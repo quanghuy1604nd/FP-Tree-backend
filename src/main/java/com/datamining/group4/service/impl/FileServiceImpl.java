@@ -1,7 +1,6 @@
 package com.datamining.group4.service.impl;
 
 import com.datamining.group4.dao.ItemsetDAO;
-import com.datamining.group4.entity.DataEntity;
 import com.datamining.group4.entity.ItemSet;
 import com.datamining.group4.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,5 @@
 package com.datamining.group4.dao;
 
-import com.datamining.group4.entity.DataEntity;
 import com.datamining.group4.entity.ItemSet;
 import org.springframework.stereotype.Component;
 
