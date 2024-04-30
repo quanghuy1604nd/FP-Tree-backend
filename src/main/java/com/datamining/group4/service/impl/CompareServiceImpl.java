@@ -62,7 +62,7 @@ public class CompareServiceImpl implements CompareService {
     public CompareResponseDTO compare(List<ItemSet> dataset) {
         MeasureDTO durations = new MeasureDTO();
         MeasureDTO memories = new MeasureDTO();
-        for(double minSup = 0.05; minSup <= 0.5; minSup += 0.05) {
+        for(double minSup = 0.01; minSup <= 0.5; minSup += 0.02) {
             Pair<Long, Long> FPTGrowthRes = this.getMeasureOfMinSupOfFPGrowth(dataset, minSup);
             Pair<Long, Long> AprioriRes = this.getMeasureOfMinSupOfApriori(dataset, minSup);
             durations.getFpTree().add(FPTGrowthRes.getKey());
