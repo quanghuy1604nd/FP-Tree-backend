@@ -1,0 +1,260 @@
+{
+  "nodeDTO": {
+    "name": "root",
+    "attributes": {
+      "supportCount": 0
+    },
+    "children": [
+      {
+        "name": "a",
+        "attributes": {
+          "supportCount": 8
+        },
+        "children": [
+          {
+            "name": "b",
+            "attributes": {
+              "supportCount": 5
+            },
+            "children": [
+              {
+                "name": "c",
+                "attributes": {
+                  "supportCount": 3
+                },
+                "children": [
+                  {
+                    "name": "d",
+                    "attributes": {
+                      "supportCount": 1
+                    },
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "name": "d",
+                "attributes": {
+                  "supportCount": 1
+                },
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "c",
+            "attributes": {
+              "supportCount": 1
+            },
+            "children": [
+              {
+                "name": "d",
+                "attributes": {
+                  "supportCount": 1
+                },
+                "children": [
+                  {
+                    "name": "e",
+                    "attributes": {
+                      "supportCount": 1
+                    },
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "d",
+            "attributes": {
+              "supportCount": 1
+            },
+            "children": [
+              {
+                "name": "e",
+                "attributes": {
+                  "supportCount": 1
+                },
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "b",
+        "attributes": {
+          "supportCount": 2
+        },
+        "children": [
+          {
+            "name": "c",
+            "attributes": {
+              "supportCount": 2
+            },
+            "children": [
+              {
+                "name": "d",
+                "attributes": {
+                  "supportCount": 1
+                },
+                "children": []
+              },
+              {
+                "name": "e",
+                "attributes": {
+                  "supportCount": 1
+                },
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "headerTable": {
+    "a": {
+      "name": "a",
+      "attributes": {
+        "supportCount": 8
+      },
+      "children": [
+        {
+          "name": "b",
+          "attributes": {
+            "supportCount": 5
+          },
+          "children": [
+            {
+              "name": "c",
+              "attributes": {
+                "supportCount": 3
+              },
+              "children": [
+                {
+                  "name": "d",
+                  "attributes": {
+                    "supportCount": 1
+                  },
+                  "children": []
+                }
+              ]
+            },
+            {
+              "name": "d",
+              "attributes": {
+                "supportCount": 1
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "c",
+          "attributes": {
+            "supportCount": 1
+          },
+          "children": [
+            {
+              "name": "d",
+              "attributes": {
+                "supportCount": 1
+              },
+              "children": [
+                {
+                  "name": "e",
+                  "attributes": {
+                    "supportCount": 1
+                  },
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "d",
+          "attributes": {
+            "supportCount": 1
+          },
+          "children": [
+            {
+              "name": "e",
+              "attributes": {
+                "supportCount": 1
+              },
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    "b": {
+      "name": "b",
+      "attributes": {
+        "supportCount": 5
+      },
+      "children": [
+        {
+          "name": "c",
+          "attributes": {
+            "supportCount": 3
+          },
+          "children": [
+            {
+              "name": "d",
+              "attributes": {
+                "supportCount": 1
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "d",
+          "attributes": {
+            "supportCount": 1
+          },
+          "children": []
+        }
+      ]
+    },
+    "c": {
+      "name": "c",
+      "attributes": {
+        "supportCount": 2
+      },
+      "children": [
+        {
+          "name": "d",
+          "attributes": {
+            "supportCount": 1
+          },
+          "children": []
+        },
+        {
+          "name": "e",
+          "attributes": {
+            "supportCount": 1
+          },
+          "children": []
+        }
+      ]
+    },
+    "d": {
+      "name": "d",
+      "attributes": {
+        "supportCount": 1
+      },
+      "children": []
+    },
+    "e": {
+      "name": "e",
+      "attributes": {
+        "supportCount": 1
+      },
+      "children": []
+    }
+  }
+}
