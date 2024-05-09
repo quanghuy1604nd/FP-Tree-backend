@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.*;
 
 @Component
-public class ItemsetDAO {
+public class DAO {
     private static final String SPLIT_REGEX = ",\\s*";
     public List<ItemSet> findAll(String fileName) {
         List<ItemSet> records = new ArrayList<>();

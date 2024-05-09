@@ -55,12 +55,6 @@ public class FrequentItemSetController {
         frequentItemSets.setFrequentItemSet(frequentItemSets.getFrequentItemSet().stream().peek(x -> x.setSupport(x.getSupport() / fpTree.getSizeOfTransactions())).toList());
         long duration = System.currentTimeMillis() - start;
         frequentItemSets.setDuration(duration);
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        try(FileWriter fileWriter = new FileWriter(storageService.getPathToDirectoryStoreInputFile(fileName) + "/FPG_FrequentItemSets_minSup_" + minSup+".json")) {
-            gson.toJson(frequentItemSets, fileWriter);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
         return frequentItemSets;
     }
 }

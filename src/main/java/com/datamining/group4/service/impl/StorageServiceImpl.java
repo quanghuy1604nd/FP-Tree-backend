@@ -1,9 +1,13 @@
 package com.datamining.group4.service.impl;
 
 import com.datamining.group4.configuration.StorageProperties;
+import com.datamining.group4.dto.FrequentItemSetAndRuleDTO;
+import com.datamining.group4.dto.FrequentItemSetDTO;
 import com.datamining.group4.dto.MetaFile;
 import com.datamining.group4.exception.StorageException;
 import com.datamining.group4.service.StorageService;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
@@ -11,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -71,23 +76,14 @@ public class StorageServiceImpl implements StorageService {
     }
 
     @Override
-    public String getPathToTreeFile(String fileName) {
-        return getPathToDirectoryStoreInputFile(fileName) +'/' + environment.getProperty("storage.fpTree");
+    public void storeFrequentItemSetsAndRuleFPGrowth(String fileName, FrequentItemSetAndRuleDTO frequentItemSetAndRuleDTO, double minSup, double minConf) {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        try(FileWriter fileWriter = new FileWriter(getPathToDirectoryStoreInputFile(fileName) + "/FPG_frequentItemSetsAndRules_minSup_" + minSup + "_minConf_" + minConf + ".json")) {
+            gson.toJson(frequentItemSetAndRuleDTO, fileWriter);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    @Override
-    public String getPathToFrequentItemSetsFPGrowthFile(String fileName) {
-        return getPathToDirectoryStoreInputFile(fileName) +'/' + environment.getProperty("storage.frequentItemSetsFPGrowth");
-    }
 
-    @Override
-    public String getPathToRulesFPGrowthsFile(String fileName) {
-        return getPathToDirectoryStoreInputFile(fileName) +'/' + environment.getProperty("storage.rulesFPGrowth");
-    }
-
-    @Override
-    public boolean isExist(String fileName) {
-        File newDir = new File(getPathToDirectoryStoreInputFile(fileName));
-        return newDir.exists();
-    }
 }

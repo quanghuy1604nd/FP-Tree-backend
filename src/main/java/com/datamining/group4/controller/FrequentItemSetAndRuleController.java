@@ -59,11 +59,7 @@ public class FrequentItemSetAndRuleController {
         long duration = System.currentTimeMillis() - start;
         FrequentItemSetAndRuleDTO frequentItemSetAndRuleDTO = new FrequentItemSetAndRuleDTO(frequentItemSetDTO, ruleDTOS, duration);
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        try(FileWriter fileWriter = new FileWriter(storageService.getPathToDirectoryStoreInputFile(fileName) + "/FPG_frequentItemSetsAndRules_minSup_" + minSup + "_minConf_" + minConf + ".json")) {
-            gson.toJson(frequentItemSetAndRuleDTO, fileWriter);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        storageService.storeFrequentItemSetsAndRuleFPGrowth(fileName, frequentItemSetAndRuleDTO, minSup, minConf);
         return frequentItemSetAndRuleDTO;
 
     }

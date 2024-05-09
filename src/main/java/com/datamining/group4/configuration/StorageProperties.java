@@ -8,9 +8,4 @@ import org.springframework.stereotype.Component;
 @Data
 public class StorageProperties {
     private String location;
-    private String fpTree;
-    private String frequentItemSetsFPGrowth;
-    private String rulesFPGrowth;
-    private String frequentItemSetsApriori;
-    private String rulesApriori;
 }
