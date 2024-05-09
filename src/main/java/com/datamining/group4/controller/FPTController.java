@@ -31,24 +31,24 @@ public class FPTController {
     @Autowired
     private ItemSetService itemSetService;
 
-    private FPTree createTreeEntity(String fileName, Optional<Double> minSup) {
+    private FPTree createTreeEntity(String fileName, double minSup) {
         String filePath = storageService.getPathToInputFile(fileName);
         List<ItemSet> dataset = fileService.findAll(filePath);
         List<Integer> frequencies = Collections.nCopies(dataset.size(), 1);
         Node rootEntity = new Node("root", 0, null);
         LinkedHashMap<String, Node> headerTableEntity = new LinkedHashMap<>();
-        FPTree fpTree = new FPTree(rootEntity, headerTableEntity, minSup.orElse(0.02), dataset.size());
+        FPTree fpTree = new FPTree(rootEntity, headerTableEntity, minSup, dataset.size());
         fpTreeService.constructTree(fpTree, dataset, frequencies);
         return  fpTree;
     }
 
     @GetMapping("/create")
     public FPTreeDTO createTree(@RequestParam String fileName,
-                                @RequestParam(required = false) Optional<Double> minSup) {
+                                @RequestParam(defaultValue = "0.02") double minSup) {
         FPTree fpTree = this.createTreeEntity(fileName, minSup);
         FPTreeDTO treeDTO = fpTreeService.convertTree(fpTree);
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        try(FileWriter fileWriter = new FileWriter(storageService.getPathToTreeFile(fileName))) {
+        try(FileWriter fileWriter = new FileWriter(storageService.getPathToDirectoryStoreInputFile(fileName)+"/FPG_tree_minSup_"+minSup+".json")) {
             gson.toJson(treeDTO, fileWriter);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -59,7 +59,7 @@ public class FPTController {
     @GetMapping("/create/{item}")
     public FPTreeDTO createPatterns(@PathVariable String item,
                                     @RequestParam String fileName,
-                                    @RequestParam(required = false) Optional<Double> minSup) {
+                                    @RequestParam(defaultValue = "0.02") double minSup) {
         FPTree fpTree = this.createTreeEntity(fileName, minSup);
         Pair<List<ItemSet>, List<Integer>> prefix = itemSetService.findPrefixPathsOfItem(fpTree, item);
         List<ItemSet> patterns = prefix.getKey();

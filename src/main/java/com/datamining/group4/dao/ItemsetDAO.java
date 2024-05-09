@@ -6,9 +6,8 @@ import org.springframework.stereotype.Component;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+
 @Component
 public class ItemsetDAO {
     private static final String SPLIT_REGEX = ",\\s*";
@@ -18,7 +17,8 @@ public class ItemsetDAO {
             String line;
             while((line = bufferedReader.readLine()) != null) {
                 String[] values = line.split(SPLIT_REGEX);
-                records.add(new ItemSet(Arrays.asList(values), 0));
+                Set<String> set = new HashSet<>(Arrays.asList(values));
+                records.add(new ItemSet(new ArrayList<>(set), 0));
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -32,7 +32,8 @@ public class ItemsetDAO {
             int i = 0;
             while((line = bufferedReader.readLine()) != null && i < numOfRecords) {
                 String[] values = line.split(SPLIT_REGEX);
-                records.add(new ItemSet(Arrays.asList(values), 0));
+                Set<String> set = new HashSet<>(Arrays.asList(values));
+                records.add(new ItemSet(new ArrayList<>(set), 0));
                 i++;
             }
         } catch (IOException e) {

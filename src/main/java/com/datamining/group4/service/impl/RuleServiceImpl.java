@@ -77,9 +77,11 @@ public class RuleServiceImpl implements RuleService {
         if(rule.getAntecedence().getItemset().isEmpty() || rule.getConsequence().getItemset().isEmpty())
             return false;
         int antecedenceSup = itemSetService.getSupport(rule.getAntecedence(), itemSetList);
+        System.out.println(rule);
+
+        System.out.println(antecedenceSup + " " + itemSup);
         double conf = itemSup * 1.0 / antecedenceSup;
         rule.setConfident(conf);
-//        System.out.println(rule);
 //        System.out.println(antecedenceSup + " " + conf);
         return conf >= minConf;
     }

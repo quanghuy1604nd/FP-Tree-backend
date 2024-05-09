@@ -38,19 +38,19 @@ public class PreprocessController {
     }
 
     @GetMapping("/updated/detail")
-    public HashMap<String, Integer> getUpdatedDetailData(@RequestParam String fileName, @RequestParam(required = false) Optional<Double> minSup) {
+    public HashMap<String, Integer> getUpdatedDetailData(@RequestParam String fileName, @RequestParam(defaultValue = "0.02") double minSup) {
         String filePath = storageService.getPathToInputFile(fileName);
         List<ItemSet> dataset = fileService.findAll(filePath);
-        int threshold = minSup.map(aDouble -> (int) (aDouble * dataset.size())).orElseGet(() -> (int) (0.02 * dataset.size()));
+        int threshold = (int) (0.02 * dataset.size());
         List<Integer> frequencies = Collections.nCopies(dataset.size(), 1);
         return preprocessingService.findItemGreaterOrEqualThreshold(dataset, frequencies, threshold);
     }
 
     @GetMapping("/updated/transaction")
-    public List<ItemSet> getUpdatedTransaction(@RequestParam String fileName, @RequestParam(required = false) Optional<Double> minSup) {
+    public List<ItemSet> getUpdatedTransaction(@RequestParam String fileName, @RequestParam(defaultValue = "0.02") double minSup) {
         String filePath = storageService.getPathToInputFile(fileName);
         List<ItemSet> dataset = fileService.findAll(filePath);
-        int threshold = minSup.map(aDouble -> (int) (aDouble * dataset.size())).orElseGet(() -> (int) (0.02 * dataset.size()));
+        int threshold =  (int) (0.02 * dataset.size());
         List<Integer> frequencies = Collections.nCopies(dataset.size(), 1);
         return preprocessingService.updateTransactionsAfterRemoveItem(dataset, frequencies, threshold);
     }

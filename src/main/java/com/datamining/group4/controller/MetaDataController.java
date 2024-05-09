@@ -28,11 +28,11 @@ public class MetaDataController {
     @Autowired
     private ItemSetConverter itemSetConverter;
     @GetMapping("")
-    public MetaData getMetaData(@RequestParam String fileName, @RequestParam(required = false) Optional<Integer> numOfRecords) {
+    public MetaData getMetaData(@RequestParam String fileName, @RequestParam(defaultValue = "20") int numOfRecords) {
         String filePath = storageService.getPathToInputFile(fileName);
         List<ItemSet> dataset = fileService.findAll(filePath);
         List<Integer> frequencies = Collections.nCopies(dataset.size(), 1);
-        List<ItemSetDTO> transactions = dataset.subList(0, Math.min(numOfRecords.orElse(20), dataset.size())).stream().map(itemSetConverter::toDto).toList();
+        List<ItemSetDTO> transactions = dataset.subList(0, Math.min(numOfRecords, dataset.size())).stream().map(itemSetConverter::toDto).toList();
         HashMap<String, Integer> itemFrequencies = preprocessingService.findItemFrequencies(dataset, frequencies);
         return new MetaData(dataset.size(), itemFrequencies.keySet().size(), transactions, itemFrequencies);
     }

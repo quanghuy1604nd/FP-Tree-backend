@@ -35,8 +35,8 @@ public class RuleController {
 
     @GetMapping("/rules-only")
     public List<RuleDTO> getAllRules(@RequestParam String fileName,
-                                     @RequestParam(required = false) Optional<Double> minSup,
-                                     @RequestParam(required = false) Optional<Double> minConf) {
+                                     @RequestParam(defaultValue = "0.02") double minSup,
+                                     @RequestParam(defaultValue="0.5") double minConf) {
         String filePath = storageService.getPathToInputFile(fileName);
         List<ItemSet> dataset = fileService.findAll(filePath);
 
@@ -44,9 +44,9 @@ public class RuleController {
         List<Integer> frequencies = Collections.nCopies(dataset.size(), 1);
         Node rootEntity = new Node("root", 0, null);
         LinkedHashMap<String, Node> headerTableEntity = new LinkedHashMap<>();
-        FPTree fpTree = new FPTree(rootEntity, headerTableEntity, minSup.orElse(0.02), dataset.size());
+        FPTree fpTree = new FPTree(rootEntity, headerTableEntity, minSup, dataset.size());
         fpTreeService.constructTree(fpTree, dataset, frequencies);
         FrequentItemSet frequentItemSet = frequentItemSetConverter.toEntity(frequentItemSetService.generateFrequentItemSets(fpTree));
-        return ruleService.generateAllRules(frequentItemSet.getFrequentItemSet(), dataset, minConf.orElse(0.5));
+        return ruleService.generateAllRules(frequentItemSet.getFrequentItemSet(), dataset, minConf);
     }
 }
