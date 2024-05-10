@@ -57,8 +57,8 @@ public class FrequentItemSetAndRuleController {
         FrequentItemSet frequentItemSet = frequentItemSetConverter.toEntity(frequentItemSetDTO);
         List<RuleDTO> ruleDTOS = ruleService.generateAllRules(frequentItemSet.getFrequentItemSet(), dataset, minConf);
         long duration = System.currentTimeMillis() - start;
+        frequentItemSetDTO.getFrequentItemSet().stream().peek(x -> x.setSupport(x.getSupport() / fpTree.getSizeOfTransactions())).toList();
         FrequentItemSetAndRuleDTO frequentItemSetAndRuleDTO = new FrequentItemSetAndRuleDTO(frequentItemSetDTO, ruleDTOS, duration);
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
         storageService.storeFrequentItemSetsAndRuleFPGrowth(fileName, frequentItemSetAndRuleDTO, minSup, minConf);
         return frequentItemSetAndRuleDTO;
 
