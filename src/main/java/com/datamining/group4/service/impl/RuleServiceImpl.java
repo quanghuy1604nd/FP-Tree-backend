@@ -10,10 +10,8 @@ import com.datamining.group4.service.RuleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
+
 @Service
 public class RuleServiceImpl implements RuleService {
     @Autowired
@@ -79,9 +77,11 @@ public class RuleServiceImpl implements RuleService {
         if(rule.getAntecedence().getItemset().isEmpty() || rule.getConsequence().getItemset().isEmpty())
             return false;
         int antecedenceSup = itemSetService.getSupport(rule.getAntecedence(), itemSetList);
+        System.out.println(rule);
+
+        System.out.println(antecedenceSup + " " + itemSup);
         double conf = itemSup * 1.0 / antecedenceSup;
         rule.setConfident(conf);
-//        System.out.println(rule);
 //        System.out.println(antecedenceSup + " " + conf);
         return conf >= minConf;
     }

@@ -7,9 +7,13 @@ import com.datamining.group4.entity.Node;
 import com.datamining.group4.entity.Pair;
 import com.datamining.group4.service.*;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
 @RestController
@@ -27,25 +31,35 @@ public class FPTController {
     @Autowired
     private ItemSetService itemSetService;
 
-    private FPTree createTreeEntity(String fileName, Optional<Double> minSup) {
-        String filePath = storageService.getPathToFile(fileName);
+    private FPTree createTreeEntity(String fileName, double minSup) {
+        String filePath = storageService.getPathToInputFile(fileName);
         List<ItemSet> dataset = fileService.findAll(filePath);
         List<Integer> frequencies = Collections.nCopies(dataset.size(), 1);
         Node rootEntity = new Node("root", 0, null);
         LinkedHashMap<String, Node> headerTableEntity = new LinkedHashMap<>();
-        FPTree fpTree = new FPTree(rootEntity, headerTableEntity, minSup.orElse(0.02), dataset.size());
+        FPTree fpTree = new FPTree(rootEntity, headerTableEntity, minSup, dataset.size());
         fpTreeService.constructTree(fpTree, dataset, frequencies);
         return  fpTree;
     }
 
     @GetMapping("/create")
-    public FPTreeDTO createTree(@RequestParam String fileName, @RequestParam(required = false) Optional<Double> minSup) {
+    public FPTreeDTO createTree(@RequestParam String fileName,
+                                @RequestParam(defaultValue = "0.02") double minSup) {
         FPTree fpTree = this.createTreeEntity(fileName, minSup);
-        return fpTreeService.convertTree(fpTree);
+        FPTreeDTO treeDTO = fpTreeService.convertTree(fpTree);
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        try(FileWriter fileWriter = new FileWriter(storageService.getPathToDirectoryStoreInputFile(fileName)+"/FPG_tree_minSup_"+minSup+".json")) {
+            gson.toJson(treeDTO, fileWriter);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return treeDTO;
     }
 
     @GetMapping("/create/{item}")
-    public FPTreeDTO createPatterns(@PathVariable String item,  @RequestParam String fileName, @RequestParam(required = false) Optional<Double> minSup) {
+    public FPTreeDTO createPatterns(@PathVariable String item,
+                                    @RequestParam String fileName,
+                                    @RequestParam(defaultValue = "0.02") double minSup) {
         FPTree fpTree = this.createTreeEntity(fileName, minSup);
         Pair<List<ItemSet>, List<Integer>> prefix = itemSetService.findPrefixPathsOfItem(fpTree, item);
         List<ItemSet> patterns = prefix.getKey();

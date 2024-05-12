@@ -37,7 +37,7 @@ public class CompareServiceImpl implements CompareService {
         FrequentItemSetDTO frequentItemSets = aprioriService.generateFrequentItemSets(dataset, minSup, frequenciesOfPreItem);
         long duration = System.currentTimeMillis() - start;
         long afterUsedMem=Runtime.getRuntime().totalMemory()-Runtime.getRuntime().freeMemory();
-        return new Pair<>(duration, afterUsedMem-beforeUsedMem);
+        return new Pair<>(duration, (afterUsedMem-beforeUsedMem) / 1024);
     }
 
     private Pair<Long, Long> getMeasureOfMinSupOfFPGrowth(List<ItemSet> dataset, double minSup) {
@@ -51,12 +51,12 @@ public class CompareServiceImpl implements CompareService {
         LinkedHashMap<String, Node> headerTableEntity = new LinkedHashMap<>();
         FPTree fpTree = new FPTree(rootEntity, headerTableEntity, minSup, dataset.size());
         fpTreeService.constructTree(fpTree, dataset, frequencies);
-        FrequentItemSetDTO frequentItemSets = frequentItemSetService.generateFrequentItemSets(fpTree, dataset, 0);
+        FrequentItemSetDTO frequentItemSets = frequentItemSetService.generateFrequentItemSets(fpTree);
         long duration = System.currentTimeMillis() - start;
         long afterUsedMem=Runtime.getRuntime().totalMemory()-Runtime.getRuntime().freeMemory();
         frequentItemSets.setDuration(duration);
 //        System.out.println(prevFree + "," + free);
-        return new Pair<>(duration, afterUsedMem-beforeUsedMem);
+        return new Pair<>(duration,( afterUsedMem-beforeUsedMem) / 1024);
     }
     @Override
     public CompareResponseDTO compare(List<ItemSet> dataset) {

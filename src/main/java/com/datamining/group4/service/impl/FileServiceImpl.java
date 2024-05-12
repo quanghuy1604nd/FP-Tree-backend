@@ -1,6 +1,6 @@
 package com.datamining.group4.service.impl;
 
-import com.datamining.group4.dao.ItemsetDAO;
+import com.datamining.group4.dao.DAO;
 import com.datamining.group4.entity.ItemSet;
 import com.datamining.group4.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,15 +10,16 @@ import java.util.List;
 @Service
 public class FileServiceImpl implements FileService {
     @Autowired
-    private ItemsetDAO itemsetDAO;
+    private DAO DAO;
 
     @Override
     public List<ItemSet> findAll(String fileName) {
-        return itemsetDAO.findAll(fileName);
+        return DAO.findAll(fileName);
+
     }
     @Override
     public List<ItemSet> findFirstNItemset(String fileName, int numOfRecords) {
-        return itemsetDAO.findFirstNItemsets(fileName, numOfRecords);
+        return DAO.findFirstNItemsets(fileName, numOfRecords);
     }
 
 }

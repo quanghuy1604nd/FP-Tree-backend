@@ -52,7 +52,7 @@ public class FPTree {
                 else {
                     Node newChild = new Node(item, frequency.get(i), p);
                     p.getMapChildren().put(item, newChild);
-                    p.getChildren().add(newChild);
+//                    p.getChildren().add(newChild);
                     this.addNodeToHeaderTable(item, newChild);
                 }
                 p = p.getMapChildren().get(item);

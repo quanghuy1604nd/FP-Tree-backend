@@ -30,7 +30,7 @@ public class FrequentItemSetAprioriController {
 
     @GetMapping("/frequent-itemSet-apriori")
     public FrequentItemSetDTO getFrequentItemSetsApriori(@RequestParam("fileName") String fileName, @RequestParam("minSup") Optional<Double> minSup) {
-        String filePath = storageService.getPathToFile(fileName);
+        String filePath = storageService.getPathToInputFile(fileName);
 
         List<ItemSet> dataset = fileService.findAll(filePath);
         List<Integer> frequencies = Collections.nCopies(dataset.size(), 1);

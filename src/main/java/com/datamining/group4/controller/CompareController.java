@@ -30,7 +30,7 @@ public class CompareController {
     private CompareService compareService;
     @GetMapping
     public CompareResponseDTO compare(@RequestParam String fileName) {
-        String filePath = storageService.getPathToFile(fileName);
+        String filePath = storageService.getPathToInputFile(fileName);
         List<ItemSet> dataset = fileService.findAll(filePath);
         return compareService.compare(dataset);
     }

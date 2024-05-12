@@ -15,7 +15,7 @@ public class Node {
     private String itemName;
     private int supportCount;
     private Node parent;
-    private List<Node> children;
+//    private List<Node> children;
     private LinkedHashMap<String, Node> mapChildren;
     private Node link;
     public Node(String itemName, int supportCount, Node parent) {
@@ -23,6 +23,6 @@ public class Node {
         this.supportCount = supportCount;
         this.parent = parent;
         this.mapChildren = new LinkedHashMap<>();
-        this.children = new ArrayList<>();
+//        this.children = new ArrayList<>();
     }
 }
