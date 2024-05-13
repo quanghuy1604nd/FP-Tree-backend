@@ -4,6 +4,9 @@ import com.datamining.group4.dto.FrequentItemSetDTO;
 import com.datamining.group4.entity.FPTree;
 import com.datamining.group4.entity.ItemSet;
 import com.datamining.group4.entity.Node;
+
+import com.datamining.group4.service.*;
+
 import com.datamining.group4.service.FPTreeService;
 import com.datamining.group4.service.FileService;
 import com.datamining.group4.service.FrequentItemSetService;
@@ -32,6 +35,8 @@ public class FrequentItemSetController {
     private StorageService storageService;
     @Autowired
     private FrequentItemSetService frequentItemSetService;
+    @Autowired
+    private AprioriService aprioriService;
 
 
     @GetMapping("/frequent-items")
@@ -57,4 +62,5 @@ public class FrequentItemSetController {
         frequentItemSets.setDuration(duration);
         return frequentItemSets;
     }
+
 }
