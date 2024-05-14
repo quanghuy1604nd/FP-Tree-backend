@@ -1,0 +1,57 @@
+{
+  "frequentItemSet": {
+    "frequentItemSet": [
+      {
+        "itemset": [
+          "root vegetables"
+        ],
+        "support": 0.10899847483477376
+      },
+      {
+        "itemset": [
+          "tropical fruit"
+        ],
+        "support": 0.10493136756481952
+      },
+      {
+        "itemset": [
+          "bottled water"
+        ],
+        "support": 0.11052364006100661
+      },
+      {
+        "itemset": [
+          "soda"
+        ],
+        "support": 0.17437722419928825
+      },
+      {
+        "itemset": [
+          "yogurt"
+        ],
+        "support": 0.13950177935943062
+      },
+      {
+        "itemset": [
+          "other vegetables"
+        ],
+        "support": 0.1934926283680732
+      },
+      {
+        "itemset": [
+          "rolls/buns"
+        ],
+        "support": 0.18393492628368074
+      },
+      {
+        "itemset": [
+          "whole milk"
+        ],
+        "support": 0.25551601423487547
+      }
+    ],
+    "duration": 0
+  },
+  "rules": [],
+  "duration": 26
+}

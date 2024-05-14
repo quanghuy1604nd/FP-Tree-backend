@@ -81,14 +81,13 @@ public class RuleServiceImpl implements RuleService {
                 StringBuilder key = new StringBuilder(x.getKey());
                 int k = x.getValue().getKey();
                 boolean flag = x.getValue().getValue();
-//                System.out.println(key + " " + k + " " + flag);
                 if(flag) {
+//                    System.out.println(key + " " + k + " " + flag);
                     q.add(new Pair<>(key, k));
                 }
             }
             init = false;
         }
-
         return res;
     }
 
