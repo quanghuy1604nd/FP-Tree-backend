@@ -43,10 +43,11 @@ public class RuleServiceImpl implements RuleService {
         int n = itemset.getItemset().size();
         Queue<Pair<StringBuilder, Integer>> q = new LinkedList<>();
         StringBuilder s = new StringBuilder("0".repeat(n));
+        boolean init = true;
         q.add(new Pair<>(s, n));
-        boolean flag = true; // cờ cho lần đầu duyệt loai bỏ 0000
         while(!q.isEmpty()) {
             int sz = q.size();
+            Map<String, Pair<Integer, Boolean>> mark = new LinkedHashMap<>();
             for(int j = 0; j < sz; j++) {
                 Pair<StringBuilder, Integer> top = q.poll();
 
@@ -54,20 +55,38 @@ public class RuleServiceImpl implements RuleService {
                 // nghĩa là không chia cho fpt.getSizeOfTransactions()
 
                 Rule rule = createRule(top.getKey(), itemset, (int) itemset.getSupport());
-                if(flag || checkRule(rule, itemSetList, (int) itemset.getSupport(), minConf)) {
-                    if(!flag) res.add(rule);
+                boolean isValidRule = checkRule(rule, itemSetList, (int) itemset.getSupport(), minConf);
+                if(init || isValidRule) {
+                    if(!init) res.add(rule);
                     // thêm những nút con
                     for(int k = top.getValue() - 1; k >= 0; k--) {
                         StringBuilder x = new StringBuilder(top.getKey());
                         if(x.charAt(k) != '1') {
                             x.setCharAt(k, '1');
-                            q.add(new Pair<>(x, k));
+                            mark.put(x.toString(), new Pair<>(k, true));
                         }
                     }
                 }
-
+                else if(!isValidRule){
+                    for(int k = top.getValue() + 1; k < n; k++) {
+                        StringBuilder x = new StringBuilder(top.getKey());
+                        if(x.charAt(k) != '1') {
+                            x.setCharAt(k, '1');
+                            mark.put(x.toString(), new Pair<>(k, false));
+                        }
+                    }
+                }
             }
-            flag = false;
+            for(Map.Entry<String, Pair<Integer, Boolean>> x : mark.entrySet()) {
+                StringBuilder key = new StringBuilder(x.getKey());
+                int k = x.getValue().getKey();
+                boolean flag = x.getValue().getValue();
+//                System.out.println(key + " " + k + " " + flag);
+                if(flag) {
+                    q.add(new Pair<>(key, k));
+                }
+            }
+            init = false;
         }
 
         return res;
@@ -77,9 +96,9 @@ public class RuleServiceImpl implements RuleService {
         if(rule.getAntecedence().getItemset().isEmpty() || rule.getConsequence().getItemset().isEmpty())
             return false;
         int antecedenceSup = itemSetService.getSupport(rule.getAntecedence(), itemSetList);
-        System.out.println(rule);
-
-        System.out.println(antecedenceSup + " " + itemSup);
+//        System.out.println(rule);
+//
+//        System.out.println(antecedenceSup + " " + itemSup);
         double conf = itemSup * 1.0 / antecedenceSup;
         rule.setConfident(conf);
 //        System.out.println(antecedenceSup + " " + conf);

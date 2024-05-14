@@ -1,0 +1,230 @@
+{
+  "frequentItemSet": {
+    "frequentItemSet": [
+      {
+        "itemset": [
+          "Y"
+        ],
+        "support": 0.6
+      },
+      {
+        "itemset": [
+          "Y",
+          "K"
+        ],
+        "support": 0.6
+      },
+      {
+        "itemset": [
+          "O"
+        ],
+        "support": 0.6
+      },
+      {
+        "itemset": [
+          "K",
+          "O"
+        ],
+        "support": 0.6
+      },
+      {
+        "itemset": [
+          "E",
+          "K",
+          "O"
+        ],
+        "support": 0.6
+      },
+      {
+        "itemset": [
+          "E",
+          "O"
+        ],
+        "support": 0.6
+      },
+      {
+        "itemset": [
+          "M"
+        ],
+        "support": 0.6
+      },
+      {
+        "itemset": [
+          "K",
+          "M"
+        ],
+        "support": 0.6
+      },
+      {
+        "itemset": [
+          "E"
+        ],
+        "support": 0.8
+      },
+      {
+        "itemset": [
+          "E",
+          "K"
+        ],
+        "support": 0.8
+      },
+      {
+        "itemset": [
+          "K"
+        ],
+        "support": 1.0
+      }
+    ],
+    "duration": 0
+  },
+  "rules": [
+    {
+      "antecedence": {
+        "itemset": [
+          "Y"
+        ],
+        "support": 0.0
+      },
+      "consequence": {
+        "itemset": [
+          "K"
+        ],
+        "support": 0.0
+      },
+      "support": 3.0,
+      "confident": 1.0
+    },
+    {
+      "antecedence": {
+        "itemset": [
+          "O"
+        ],
+        "support": 0.0
+      },
+      "consequence": {
+        "itemset": [
+          "K"
+        ],
+        "support": 0.0
+      },
+      "support": 3.0,
+      "confident": 1.0
+    },
+    {
+      "antecedence": {
+        "itemset": [
+          "E",
+          "O"
+        ],
+        "support": 0.0
+      },
+      "consequence": {
+        "itemset": [
+          "K"
+        ],
+        "support": 0.0
+      },
+      "support": 3.0,
+      "confident": 1.0
+    },
+    {
+      "antecedence": {
+        "itemset": [
+          "K",
+          "O"
+        ],
+        "support": 0.0
+      },
+      "consequence": {
+        "itemset": [
+          "E"
+        ],
+        "support": 0.0
+      },
+      "support": 3.0,
+      "confident": 1.0
+    },
+    {
+      "antecedence": {
+        "itemset": [
+          "O"
+        ],
+        "support": 0.0
+      },
+      "consequence": {
+        "itemset": [
+          "E",
+          "K"
+        ],
+        "support": 0.0
+      },
+      "support": 3.0,
+      "confident": 1.0
+    },
+    {
+      "antecedence": {
+        "itemset": [
+          "O"
+        ],
+        "support": 0.0
+      },
+      "consequence": {
+        "itemset": [
+          "E"
+        ],
+        "support": 0.0
+      },
+      "support": 3.0,
+      "confident": 1.0
+    },
+    {
+      "antecedence": {
+        "itemset": [
+          "M"
+        ],
+        "support": 0.0
+      },
+      "consequence": {
+        "itemset": [
+          "K"
+        ],
+        "support": 0.0
+      },
+      "support": 3.0,
+      "confident": 1.0
+    },
+    {
+      "antecedence": {
+        "itemset": [
+          "E"
+        ],
+        "support": 0.0
+      },
+      "consequence": {
+        "itemset": [
+          "K"
+        ],
+        "support": 0.0
+      },
+      "support": 4.0,
+      "confident": 1.0
+    },
+    {
+      "antecedence": {
+        "itemset": [
+          "K"
+        ],
+        "support": 0.0
+      },
+      "consequence": {
+        "itemset": [
+          "E"
+        ],
+        "support": 0.0
+      },
+      "support": 4.0,
+      "confident": 0.8
+    }
+  ],
+  "duration": 1
+}

@@ -1,0 +1,198 @@
+{
+  "frequentItemSet": {
+    "frequentItemSet": [
+      {
+        "itemset": [
+          "pork"
+        ],
+        "support": 0.05765124555160142
+      },
+      {
+        "itemset": [
+          "napkins"
+        ],
+        "support": 0.05236400610066091
+      },
+      {
+        "itemset": [
+          "domestic eggs"
+        ],
+        "support": 0.06344687341128623
+      },
+      {
+        "itemset": [
+          "curd"
+        ],
+        "support": 0.05327910523640061
+      },
+      {
+        "itemset": [
+          "coffee"
+        ],
+        "support": 0.05805795627859685
+      },
+      {
+        "itemset": [
+          "brown bread"
+        ],
+        "support": 0.06487036095577021
+      },
+      {
+        "itemset": [
+          "whipped/sour cream"
+        ],
+        "support": 0.07168276563294357
+      },
+      {
+        "itemset": [
+          "butter"
+        ],
+        "support": 0.05541433655312659
+      },
+      {
+        "itemset": [
+          "margarine"
+        ],
+        "support": 0.05856634468734113
+      },
+      {
+        "itemset": [
+          "frankfurter"
+        ],
+        "support": 0.058973055414336555
+      },
+      {
+        "itemset": [
+          "bottled beer"
+        ],
+        "support": 0.08052872394509406
+      },
+      {
+        "itemset": [
+          "fruit/vegetable juice"
+        ],
+        "support": 0.0722928317234367
+      },
+      {
+        "itemset": [
+          "pip fruit"
+        ],
+        "support": 0.07564819522114896
+      },
+      {
+        "itemset": [
+          "canned beer"
+        ],
+        "support": 0.07768174885612608
+      },
+      {
+        "itemset": [
+          "sausage"
+        ],
+        "support": 0.09395017793594305
+      },
+      {
+        "itemset": [
+          "root vegetables"
+        ],
+        "support": 0.10899847483477376
+      },
+      {
+        "itemset": [
+          "tropical fruit"
+        ],
+        "support": 0.10493136756481952
+      },
+      {
+        "itemset": [
+          "beef"
+        ],
+        "support": 0.05246568378240976
+      },
+      {
+        "itemset": [
+          "bottled water"
+        ],
+        "support": 0.11052364006100661
+      },
+      {
+        "itemset": [
+          "shopping bags"
+        ],
+        "support": 0.09852567361464158
+      },
+      {
+        "itemset": [
+          "citrus fruit"
+        ],
+        "support": 0.08276563294356888
+      },
+      {
+        "itemset": [
+          "newspapers"
+        ],
+        "support": 0.07981698017285206
+      },
+      {
+        "itemset": [
+          "pastry"
+        ],
+        "support": 0.08896797153024912
+      },
+      {
+        "itemset": [
+          "soda"
+        ],
+        "support": 0.17437722419928825
+      },
+      {
+        "itemset": [
+          "yogurt"
+        ],
+        "support": 0.13950177935943062
+      },
+      {
+        "itemset": [
+          "yogurt",
+          "whole milk"
+        ],
+        "support": 0.05602440264361973
+      },
+      {
+        "itemset": [
+          "other vegetables"
+        ],
+        "support": 0.1934926283680732
+      },
+      {
+        "itemset": [
+          "whole milk",
+          "other vegetables"
+        ],
+        "support": 0.07483477376715811
+      },
+      {
+        "itemset": [
+          "rolls/buns"
+        ],
+        "support": 0.18393492628368074
+      },
+      {
+        "itemset": [
+          "rolls/buns",
+          "whole milk"
+        ],
+        "support": 0.05663446873411286
+      },
+      {
+        "itemset": [
+          "whole milk"
+        ],
+        "support": 0.25551601423487547
+      }
+    ],
+    "duration": 0
+  },
+  "rules": [],
+  "duration": 73
+}

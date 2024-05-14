@@ -1,0 +1,241 @@
+{
+  "nodeDTO": {
+    "name": "root",
+    "attributes": {
+      "supportCount": 0
+    },
+    "children": [
+      {
+        "name": "K",
+        "attributes": {
+          "supportCount": 5
+        },
+        "children": [
+          {
+            "name": "E",
+            "attributes": {
+              "supportCount": 4
+            },
+            "children": [
+              {
+                "name": "M",
+                "attributes": {
+                  "supportCount": 2
+                },
+                "children": [
+                  {
+                    "name": "O",
+                    "attributes": {
+                      "supportCount": 1
+                    },
+                    "children": [
+                      {
+                        "name": "Y",
+                        "attributes": {
+                          "supportCount": 1
+                        },
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "O",
+                "attributes": {
+                  "supportCount": 2
+                },
+                "children": [
+                  {
+                    "name": "Y",
+                    "attributes": {
+                      "supportCount": 1
+                    },
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "M",
+            "attributes": {
+              "supportCount": 1
+            },
+            "children": [
+              {
+                "name": "Y",
+                "attributes": {
+                  "supportCount": 1
+                },
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "headerTable": {
+    "K": {
+      "name": "K",
+      "attributes": {
+        "supportCount": 5
+      },
+      "children": [
+        {
+          "name": "E",
+          "attributes": {
+            "supportCount": 4
+          },
+          "children": [
+            {
+              "name": "M",
+              "attributes": {
+                "supportCount": 2
+              },
+              "children": [
+                {
+                  "name": "O",
+                  "attributes": {
+                    "supportCount": 1
+                  },
+                  "children": [
+                    {
+                      "name": "Y",
+                      "attributes": {
+                        "supportCount": 1
+                      },
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "O",
+              "attributes": {
+                "supportCount": 2
+              },
+              "children": [
+                {
+                  "name": "Y",
+                  "attributes": {
+                    "supportCount": 1
+                  },
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "M",
+          "attributes": {
+            "supportCount": 1
+          },
+          "children": [
+            {
+              "name": "Y",
+              "attributes": {
+                "supportCount": 1
+              },
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    "E": {
+      "name": "E",
+      "attributes": {
+        "supportCount": 4
+      },
+      "children": [
+        {
+          "name": "M",
+          "attributes": {
+            "supportCount": 2
+          },
+          "children": [
+            {
+              "name": "O",
+              "attributes": {
+                "supportCount": 1
+              },
+              "children": [
+                {
+                  "name": "Y",
+                  "attributes": {
+                    "supportCount": 1
+                  },
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "O",
+          "attributes": {
+            "supportCount": 2
+          },
+          "children": [
+            {
+              "name": "Y",
+              "attributes": {
+                "supportCount": 1
+              },
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    "M": {
+      "name": "M",
+      "attributes": {
+        "supportCount": 2
+      },
+      "children": [
+        {
+          "name": "O",
+          "attributes": {
+            "supportCount": 1
+          },
+          "children": [
+            {
+              "name": "Y",
+              "attributes": {
+                "supportCount": 1
+              },
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    "O": {
+      "name": "O",
+      "attributes": {
+        "supportCount": 1
+      },
+      "children": [
+        {
+          "name": "Y",
+          "attributes": {
+            "supportCount": 1
+          },
+          "children": []
+        }
+      ]
+    },
+    "Y": {
+      "name": "Y",
+      "attributes": {
+        "supportCount": 1
+      },
+      "children": []
+    }
+  }
+}
